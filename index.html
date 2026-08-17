@@ -606,7 +606,13 @@ function renderTrackerCustomerResults(id,rows,term){
 function normalizeInvoiceCandidate(value){const s=String(value??'').trim();if(!s)return'';const m=s.match(/\bINV\s*[-_\/]?\s*([A-Z0-9][A-Z0-9._\/-]*)/i);if(!m)return'';return `INV-${m[1]}`.replace(/--+/g,'-').toUpperCase()}
 function invoiceRefFromId(id){const raw=String(id??'').trim();if(!/^\d+$/.test(raw))return'';return `INV-${raw.padStart(BRYLIX_INVOICE_PAD,'0')}`}
 function brylixInvoiceNumber(row){
-  for(const k of ['invoice_no','invoice_number','invoiceNo','invoiceNumber','invoice','invoice_code','invoiceCode','reference_no','reference','ref_no','ref','number','code']){const f=normalizeInvoiceCandidate(row?.[k]);if(f)return f}
+  // Brylix may return the real invoice reference directly in `id`, e.g. INV-2-26-08-11313.
+  // Prefer any explicit invoice/reference field, then accept an INV-* string from id,
+  // and only synthesize INV-xxxxx when id is truly numeric.
+  for(const k of ['invoice_no','invoice_number','invoiceNo','invoiceNumber','invoice','invoice_code','invoiceCode','reference_no','reference','ref_no','ref','number','code','id']){
+    const f=normalizeInvoiceCandidate(row?.[k]);
+    if(f)return f
+  }
   return invoiceRefFromId(row?.id)
 }
 function invoiceLastThree(inv){return digitsOnly(String(inv||'').replace(/^INV[-_\/]?/i,'')).slice(-3)}
