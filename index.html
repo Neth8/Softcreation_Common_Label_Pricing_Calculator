@@ -112,11 +112,19 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
       </div>
       <div class="sparkCard" id="trackerMotivation"><div class="sparkIcon" id="motivationEmoji">✨</div><div class="sparkText"><small>SoftCreation Daily Spark</small><b id="motivationTitle">A fresh target, a fresh chance.</b><p id="motivationText">Every confirmed invoice moves the team closer to today's goal.</p></div></div>
       <div class="trackerPanel" style="margin-top:15px"><h3>ERP Sale Entry</h3>
-        <div class="formgrid"><div class="field"><label>ERP Invoice No.</label><input id="trackerInvoice" type="text" maxlength="80" placeholder="e.g. INV-10425"></div><div class="field"><label>Sales Person</label><input id="trackerSalesPerson" type="text" maxlength="80" placeholder="Sales person name"></div></div>
+        <div class="formgrid">
+          <div class="field">
+            <label>ERP Invoice No.</label>
+            <input id="trackerInvoice" list="erpInvoiceList" type="text" maxlength="80" placeholder="Type ERP invoice / order no." autocomplete="off">
+            <datalist id="erpInvoiceList"></datalist>
+            <small class="smallMuted" id="erpInvoiceLookupStatus">Brylix ERP • start typing to search recent invoices / orders</small>
+          </div>
+          <div class="field"><label>Sales Person</label><input id="trackerSalesPerson" type="text" maxlength="80" placeholder="Sales person name"></div>
+        </div>
         <div class="invoiceItemsHead"><div><span>Invoice Items</span><small>Select an item and quantity. The system price fills automatically and stays editable for the actual ERP invoice price.</small></div><button class="btn secondary" id="addInvoiceItemBtn" type="button">+ Add Another Item</button></div>
         <div class="invoiceItems" id="invoiceItems"></div>
         <div class="invoiceTotalBar"><div><span>Invoice Sales Total</span><small>VAT Inclusive • All invoice lines</small></div><b id="trackerInvoiceTotal">Rs. 0.00</b></div>
-        <div class="actions"><button class="btn primary" id="saveSaleBtn">Save ERP Sale</button><button class="btn ghost" id="clearSaleBtn">Clear Entry</button><span class="status" id="trackerEntryStatus"></span></div><div class="trackerEntryNote">📡 Manual entry is used for now. One ERP invoice can contain multiple item lines. Each saved line contributes to the same daily and monthly sales totals, and this structure can later be replaced by ERP API invoice-line data without changing the target dashboard.</div></div>
+        <div class="actions"><button class="btn primary" id="saveSaleBtn">Save ERP Sale</button><button class="btn ghost" id="clearSaleBtn">Clear Entry</button><span class="status" id="trackerEntryStatus"></span></div><div class="trackerEntryNote">📡 ERP invoice / order references are suggested read-only from Brylix ERP. Invoice item lines remain manual for now. Each saved line contributes to the same daily and monthly sales totals.</div></div>
       <div class="tableWrap" style="margin-top:15px"><table class="trackerTable"><thead><tr><th>Date</th><th>Invoice</th><th>Sales Person</th><th>Item</th><th>Qty</th><th>Price / Roll</th><th>Sale Value</th><th class="trackerAdminOnly">Admin</th></tr></thead><tbody id="trackerRows"></tbody></table></div>
     </div>
   </section>
@@ -285,10 +293,18 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
   <div class="modalCard quotationModalCard" role="dialog" aria-modal="true" aria-labelledby="quotationModalTitle">
     <div class="modalIcon">📄</div>
     <h3 id="quotationModalTitle">Create Customer Quotation</h3>
-    <p>Build a customer-ready quotation using the saved label price system. Customer details are remembered locally for faster repeat quotations.</p>
+    <p>Build a customer-ready quotation using the saved label price system. Customer details are suggested from Brylix ERP and previous quotations.</p>
     <div class="quotationTopGrid">
-      <div class="field"><label>Customer / Company Name</label><input id="quoteCustomerName" list="quoteCustomerList" type="text" maxlength="140" placeholder="Customer or company name"><datalist id="quoteCustomerList"></datalist></div>
-      <div class="field"><label>Contact Number</label><input id="quoteCustomerContact" type="tel" maxlength="40" placeholder="e.g. 077 123 4567"></div>
+      <div class="field">
+        <label>Customer / Company Name</label>
+        <input id="quoteCustomerName" list="quoteCustomerList" type="text" maxlength="140" placeholder="Type customer or company name" autocomplete="off">
+        <datalist id="quoteCustomerList"></datalist>
+      </div>
+      <div class="field">
+        <label>Contact Number</label>
+        <input id="quoteCustomerContact" list="quoteCustomerContactList" type="tel" maxlength="40" placeholder="Type customer contact number" autocomplete="off">
+        <datalist id="quoteCustomerContactList"></datalist>
+      </div>
       <div class="field"><label>Prepared By</label><input id="quotePreparedBy" type="text" maxlength="80" placeholder="Sales person name"></div>
       <div class="field"><label>Validity — Days</label><input id="quoteValidityDays" type="number" min="1" max="90" step="1" value="14"></div>
     </div>
@@ -440,6 +456,176 @@ const money=n=>'Rs. '+Number(n||0).toLocaleString('en-US',{minimumFractionDigits
 const num=id=>Number($(id).value)||0;
 const htmlEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
 
+// ---------- Brylix ERP read-only integration ----------
+const BRYLIX_API_BASE='https://softcreation.lk/api/v1';
+const BRYLIX_API_KEY='TEqihZqgTz+qpSzqtsbhcT1aS/bEXlSSyCUDc+HcgIY=';
+const BRYLIX_ORDER_CACHE_MS=120000;
+const BRYLIX_CUSTOMER_CACHE_MS=120000;
+let brylixOrderCache=[];
+let brylixOrderCacheAt=0;
+let brylixOrderLoadPromise=null;
+let brylixCustomerMatches=[];
+let brylixCustomerRequestSeq=0;
+const brylixCustomerCache=new Map();
+
+function debounce(fn,delay=250){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}}
+function normalizePhone(v){return String(v||'').replace(/[^0-9+]/g,'')}
+function setBrylixInvoiceStatus(text,error=false){const e=$('erpInvoiceLookupStatus');if(!e)return;e.textContent=text;e.style.color=error?'#fca5a5':'#94a3b8'}
+
+async function brylixGet(path,params={}){
+  const url=new URL(`${BRYLIX_API_BASE}${path}`);
+  Object.entries(params).forEach(([key,value])=>{if(value!==undefined&&value!==null&&value!=='')url.searchParams.set(key,String(value))});
+  const response=await fetch(url.toString(),{
+    method:'GET',
+    headers:{Accept:'application/json','X-API-Key':BRYLIX_API_KEY},
+    cache:'no-store',
+    credentials:'omit'
+  });
+  let json=null;
+  try{json=await response.json()}catch(e){}
+  if(!response.ok||!json||json.success===false)throw new Error(json?.message||`Brylix API ${response.status}`);
+  return json
+}
+
+function brylixOrderNumber(order){
+  return String(
+    order?.invoice_no ??
+    order?.invoice_number ??
+    order?.invoiceNo ??
+    order?.order_no ??
+    order?.order_number ??
+    order?.orderNo ??
+    order?.id ??
+    ''
+  ).trim()
+}
+
+function brylixDateISO(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return`${y}-${m}-${day}`}
+
+async function loadBrylixOrders(force=false){
+  if(!force&&brylixOrderCache.length&&(Date.now()-brylixOrderCacheAt)<BRYLIX_ORDER_CACHE_MS)return brylixOrderCache;
+  if(!force&&brylixOrderLoadPromise)return brylixOrderLoadPromise;
+  brylixOrderLoadPromise=(async()=>{
+    setBrylixInvoiceStatus('Brylix ERP • loading recent invoices / orders…');
+    const all=[],end=new Date(),start=new Date();
+    start.setDate(start.getDate()-120);
+    for(let page=1;page<=5;page++){
+      const result=await brylixGet('/orders',{per_page:100,page,start_date:brylixDateISO(start),end_date:brylixDateISO(end)});
+      const rows=Array.isArray(result.data)?result.data:[];
+      all.push(...rows);
+      const total=Number(result.meta?.total||0);
+      if(rows.length<100||(total>0&&all.length>=total))break
+    }
+    brylixOrderCache=all;
+    brylixOrderCacheAt=Date.now();
+    setBrylixInvoiceStatus(`Brylix ERP • ${all.length.toLocaleString('en-US')} recent invoice / order reference${all.length===1?'':'s'} loaded`);
+    return all
+  })();
+  try{return await brylixOrderLoadPromise}
+  finally{brylixOrderLoadPromise=null}
+}
+
+function renderBrylixInvoiceSuggestions(term=''){
+  const list=$('erpInvoiceList');if(!list)return;
+  const search=String(term||'').trim().toLowerCase();
+  const matches=brylixOrderCache.filter(order=>{
+    const number=brylixOrderNumber(order).toLowerCase();
+    const customer=String(order?.customer?.name||'').toLowerCase();
+    return !search||number.includes(search)||customer.includes(search)
+  }).slice(0,40);
+  list.innerHTML='';
+  matches.forEach(order=>{
+    const number=brylixOrderNumber(order);if(!number)return;
+    const option=document.createElement('option');option.value=number;
+    const label=[];
+    if(order.date)label.push(String(order.date));
+    if(order?.customer?.name)label.push(String(order.customer.name));
+    if(order.total!==undefined&&order.total!==null)label.push(money(order.total));
+    option.label=label.join(' • ');
+    list.appendChild(option)
+  })
+}
+
+async function refreshBrylixInvoiceSuggestions(term=''){
+  try{await loadBrylixOrders(false);renderBrylixInvoiceSuggestions(term)}
+  catch(error){console.error('Brylix order lookup failed:',error);setBrylixInvoiceStatus(`Brylix ERP unavailable • ${error.message}`,true)}
+}
+
+function normalizeBrylixCustomer(customer){
+  return{
+    erpId:customer?.id??customer?.customer_id??null,
+    name:String(customer?.name||[customer?.f_name,customer?.l_name].filter(Boolean).join(' ')||'').trim(),
+    contact:String(customer?.phone||customer?.contact||'').trim(),
+    email:String(customer?.email||'').trim(),
+    source:'brylix'
+  }
+}
+
+async function searchBrylixCustomers(term){
+  term=String(term||'').trim();
+  if(term.length<2){brylixCustomerMatches=[];refreshCustomerDatalist();return}
+  const cacheKey=term.toLowerCase(),cached=brylixCustomerCache.get(cacheKey);
+  if(cached&&(Date.now()-cached.at)<BRYLIX_CUSTOMER_CACHE_MS){
+    brylixCustomerMatches=cached.rows;refreshCustomerDatalist();return
+  }
+  const requestId=++brylixCustomerRequestSeq;
+  try{
+    const result=await brylixGet('/customers',{per_page:20,search:term});
+    if(requestId!==brylixCustomerRequestSeq)return;
+    brylixCustomerMatches=(Array.isArray(result.data)?result.data:[]).map(normalizeBrylixCustomer).filter(c=>c.name||c.contact);
+    brylixCustomerCache.set(cacheKey,{at:Date.now(),rows:brylixCustomerMatches});
+    refreshCustomerDatalist()
+  }catch(error){console.error('Brylix customer lookup failed:',error)}
+}
+
+function combinedCustomerChoices(){
+  const map=new Map();
+  const add=c=>{
+    const name=String(c?.name||'').trim(),contact=String(c?.contact||'').trim();
+    if(!name&&!contact)return;
+    const key=`${name.toLowerCase()}|${normalizePhone(contact)}`;
+    if(!map.has(key))map.set(key,{...c,name,contact})
+  };
+  customerStore().forEach(c=>add({...c,source:'quotation'}));
+  brylixCustomerMatches.forEach(add);
+  return[...map.values()]
+}
+
+function findBrylixCustomerSelection(value){
+  const raw=String(value||'').trim(),nameKey=raw.toLowerCase(),phoneKey=normalizePhone(raw);
+  return combinedCustomerChoices().find(c=>{
+    const customerName=String(c.name||'').trim().toLowerCase(),customerPhone=normalizePhone(c.contact);
+    return customerName===nameKey||(phoneKey&&customerPhone===phoneKey)
+  })||null
+}
+
+function applyBrylixCustomerSelection(value){
+  const customer=findBrylixCustomerSelection(value);if(!customer)return false;
+  if($('quoteCustomerName'))$('quoteCustomerName').value=customer.name||'';
+  if($('quoteCustomerContact'))$('quoteCustomerContact').value=customer.contact||'';
+  updateExistingCustomerQuoteHint();
+  return true
+}
+
+function initBrylixAutocomplete(){
+  const invoice=$('trackerInvoice'),customerName=$('quoteCustomerName'),customerContact=$('quoteCustomerContact');
+  if(invoice){
+    const runInvoiceSearch=debounce(value=>refreshBrylixInvoiceSuggestions(value),180);
+    invoice.addEventListener('focus',()=>refreshBrylixInvoiceSuggestions(invoice.value));
+    invoice.addEventListener('input',()=>runInvoiceSearch(invoice.value))
+  }
+  const runCustomerSearch=debounce(value=>searchBrylixCustomers(value),250);
+  if(customerName){
+    customerName.addEventListener('focus',()=>{if(customerName.value.trim().length>=2)runCustomerSearch(customerName.value)});
+    customerName.addEventListener('input',()=>{if(!applyBrylixCustomerSelection(customerName.value))runCustomerSearch(customerName.value)})
+  }
+  if(customerContact){
+    customerContact.addEventListener('focus',()=>{if(customerContact.value.trim().length>=2)runCustomerSearch(customerContact.value)});
+    customerContact.addEventListener('input',()=>{if(!applyBrylixCustomerSelection(customerContact.value))runCustomerSearch(customerContact.value)})
+  }
+}
+
+
 function currentTier(gp=Number($('margin').value)){return tiers.find(t=>t.gp===gp)||tiers[0]}
 function materialLabel(v){return v==='DTTOP'?'ELP Hybrid':v}
 function materialRates(){return {TT:num('rateTT'),DT:num('rateDT'),DTTOP:num('rateDTTOP'),BOPP:num('rateBOPP')}}
@@ -494,6 +680,7 @@ function init(){
   $('saveSettingsBtn').onclick=saveSettings;$('changePasswordBtn').onclick=changePassword;
   initSalesTracker();
   initQuotationManager();
+  initBrylixAutocomplete();
   update();
   updateSalesTracker();
   showPage('price',false);
@@ -825,7 +1012,13 @@ function quotationStore(){try{const a=JSON.parse(localStorage.getItem(QUOTATION_
 function saveQuotationStore(rows){localStorage.setItem(QUOTATION_STORE_KEY,JSON.stringify(rows))}
 function customerStore(){try{const a=JSON.parse(localStorage.getItem(CUSTOMER_STORE_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveCustomerRecord(name,contact){name=String(name||'').trim();contact=String(contact||'').trim();if(!name)return;const rows=customerStore(),key=name.toLowerCase(),now=new Date().toISOString(),i=rows.findIndex(x=>String(x.name||'').trim().toLowerCase()===key);if(i>=0)rows[i]={...rows[i],name,contact:contact||rows[i].contact||'',updatedAt:now};else rows.push({id:(crypto.randomUUID?crypto.randomUUID():Date.now()+'_'+Math.random()),name,contact,updatedAt:now});localStorage.setItem(CUSTOMER_STORE_KEY,JSON.stringify(rows));refreshCustomerDatalist()}
-function refreshCustomerDatalist(){$('quoteCustomerList').innerHTML=customerStore().sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${htmlEsc(c.name)}">${htmlEsc(c.contact||'')}</option>`).join('')}
+function refreshCustomerDatalist(){
+  const rows=typeof combinedCustomerChoices==='function'?combinedCustomerChoices():customerStore();
+  const byName=[...rows].filter(c=>c.name).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  const byContact=[...rows].filter(c=>c.contact).sort((a,b)=>String(a.contact).localeCompare(String(b.contact)));
+  if($('quoteCustomerList'))$('quoteCustomerList').innerHTML=byName.map(c=>`<option value="${htmlEsc(c.name)}">${htmlEsc(c.contact||'')}${c.source==='brylix'?' • ERP':''}</option>`).join('');
+  if($('quoteCustomerContactList'))$('quoteCustomerContactList').innerHTML=byContact.map(c=>`<option value="${htmlEsc(c.contact)}">${htmlEsc(c.name||'')}${c.source==='brylix'?' • ERP':''}</option>`).join('')
+}
 function exactSavedCustomer(name){const k=String(name||'').trim().toLowerCase();return customerStore().find(c=>String(c.name||'').trim().toLowerCase()===k)||null}
 function quotationItemOptions(selected=''){return ['<option value="">Select item</option>',...sizes.map(x=>`<option value="${htmlEsc(x[0])}" ${x[0]===selected?'selected':''}>${htmlEsc(x[0])}</option>`),`<option value="__custom__" ${selected==='__custom__'?'selected':''}>Custom / Other Item</option>`].join('')}
 function quotationMaterialOptions(selected='TT'){return ['TT','DT','DTTOP','BOPP'].map(v=>`<option value="${v}" ${v===selected?'selected':''}>${htmlEsc(materialLabel(v))}</option>`).join('')}
