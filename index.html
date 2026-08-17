@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Softcreation Label Sales Price Tool</title>
+<title>Softcreation Label Sales Price Tool — ERP Final</title>
 <style>
 :root{
   --bg:#07111f;--panel:#0f1b2d;--panel2:#13233a;--line:#223653;--text:#f8fafc;--muted:#94a3b8;
@@ -47,7 +47,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
 /* Brylix ERP touch-friendly autocomplete */
 .erpLookupWrap{position:relative;min-width:0}.erpLookupInput{width:100%}.erpLookupStatus{display:block;margin-top:5px;color:#7dd3fc;font-size:10.5px;line-height:1.4;min-height:15px}.erpLookupStatus.error{color:#fca5a5}.erpResultList{display:none;position:absolute;z-index:180;left:0;right:0;top:calc(100% + 7px);max-height:330px;overflow:auto;overscroll-behavior:contain;border:1px solid #315074;border-radius:15px;background:#091526;box-shadow:0 20px 55px rgba(0,0,0,.48);padding:7px;-webkit-overflow-scrolling:touch}.erpResultList.open{display:block}.erpResultSummary{padding:7px 9px 9px;color:#94a3b8;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.055em;position:sticky;top:-7px;background:#091526;z-index:2}.erpResultItem{width:100%;border:1px solid transparent;background:#0d1d31;color:#f8fafc;border-radius:12px;padding:11px 12px;margin:0 0 6px;text-align:left;cursor:pointer;display:flex;gap:11px;align-items:center;justify-content:space-between;min-height:58px;touch-action:manipulation}.erpResultItem:last-child{margin-bottom:0}.erpResultItem:hover,.erpResultItem:focus{outline:none;border-color:#3b82f6;background:#102844}.erpResultMain{min-width:0;flex:1}.erpResultPrimary{display:block;font-size:13px;font-weight:950;line-height:1.3;color:#f8fafc;overflow-wrap:anywhere}.erpResultSecondary{display:block;margin-top:4px;font-size:10.5px;line-height:1.35;color:#94a3b8;overflow-wrap:anywhere}.erpResultBadge{flex:0 0 auto;display:inline-flex;padding:5px 7px;border-radius:999px;border:1px solid #24527d;background:#102a46;color:#bfdbfe;font-size:9px;font-weight:950;white-space:nowrap}.erpResultEmpty{padding:15px 12px;text-align:center;color:#94a3b8;font-size:11px;line-height:1.5}.erpResultLoading{padding:15px 12px;text-align:center;color:#93c5fd;font-size:11px;font-weight:800}.erpFieldHint{font-size:10px;color:#94a3b8;line-height:1.35;margin-top:4px}
 @media(max-width:680px){.erpResultList{position:fixed;left:10px;right:10px;top:auto;bottom:max(10px,env(safe-area-inset-bottom));max-height:54vh;border-radius:20px;padding:9px;z-index:350;box-shadow:0 -8px 55px rgba(0,0,0,.62)}.erpResultSummary{top:-9px;padding:9px 10px 11px;font-size:10.5px}.erpResultItem{min-height:68px;padding:13px 14px;border-radius:15px;margin-bottom:8px}.erpResultPrimary{font-size:15px}.erpResultSecondary{font-size:11.5px;line-height:1.45}.erpResultBadge{font-size:9.5px;padding:6px 8px}.erpLookupStatus{font-size:10px}.quotationModalCard{overflow:auto}.field input.erpLookupInput{font-size:16px}}\n/* Brylix ERP diagnostics */
-.erpDebugBtn{min-width:auto!important;padding:10px 12px!important}.erpDebugPanel{display:none;position:fixed;right:16px;bottom:16px;width:min(720px,calc(100vw - 32px));max-height:min(72vh,680px);z-index:700;background:#07111f;border:1px solid #315074;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.68);overflow:hidden}.erpDebugPanel.open{display:flex;flex-direction:column}.erpDebugHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;border-bottom:1px solid #223653;background:#0f1b2d}.erpDebugHead strong{font-size:13px}.erpDebugActions{display:flex;gap:6px;flex-wrap:wrap}.erpDebugActions button{padding:7px 9px;font-size:10px}.erpDebugMeta{padding:9px 13px;border-bottom:1px solid #20334f;color:#93c5fd;font-size:10.5px;line-height:1.5;background:#0a1728}.erpDebugLog{margin:0;padding:12px 13px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.5 Consolas,Monaco,monospace;color:#dbeafe;background:#050c16;min-height:180px}.erpDebugLog .ok{color:#86efac}.erpDebugLog .warn{color:#fde68a}.erpDebugLog .err{color:#fca5a5}.erpDebugHint{padding:9px 13px;border-top:1px solid #20334f;color:#94a3b8;font-size:10px;line-height:1.45;background:#0a1728}
+.erpDebugBtn{min-width:auto!important;padding:10px 12px!important}.erpDebugPanel{display:none;position:fixed;right:16px;bottom:16px;width:min(720px,calc(100vw - 32px));max-height:min(72vh,680px);z-index:700;background:#07111f;border:1px solid #315074;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.68);overflow:hidden}.erpDebugPanel.open{display:flex;flex-direction:column}.erpDebugHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;border-bottom:1px solid #223653;background:#0f1b2d}.erpDebugHead strong{font-size:13px}.erpDebugActions{display:flex;gap:6px;flex-wrap:wrap}.erpDebugActions button{padding:7px 9px;font-size:10px}.erpDebugMeta{padding:9px 13px;border-bottom:1px solid #20334f;color:#93c5fd;font-size:10.5px;line-height:1.5;background:#0a1728}.erpDebugLog{margin:0;padding:12px 13px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.5 Consolas,Monaco,monospace;color:#dbeafe;background:#050c16;min-height:180px}.erpDebugLog .ok{color:#86efac}.erpDebugLog .warn{color:#fde68a}.erpDebugLog .err{color:#fca5a5}.erpDebugHint{padding:9px 13px;border-top:1px solid #20334f;color:#94a3b8;font-size:10px;line-height:1.45;background:#0a1728}.erpDebugConfig{padding:10px 13px;border-top:1px solid #20334f;background:#081321;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:end}.erpDebugConfig .field{gap:5px}.erpDebugConfig .field label{font-size:9px}.erpDebugConfig input{padding:9px 10px;font-size:11px}.erpDebugConfig .btn{padding:9px 10px;font-size:10px;white-space:nowrap}@media(max-width:680px){.erpDebugConfig{grid-template-columns:1fr 1fr}.erpDebugConfig .field{grid-column:1/-1}}
 @media(max-width:680px){.erpDebugPanel{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));width:auto;max-height:78vh;border-radius:20px}.erpDebugHead{align-items:flex-start;flex-direction:column}.erpDebugActions{width:100%}.erpDebugActions button{flex:1}.erpDebugLog{font-size:10.5px;min-height:220px}.erpDebugBtn{padding:9px 10px!important;font-size:11px!important}}
 
 </style>
@@ -56,7 +56,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
 <div class="wrap">
   <div class="hero appHeader">
     <div>
-      <div class="eyebrow">Softcreation Sales Platform . V.1.1</div>
+      <div class="eyebrow">Softcreation Sales Platform . V.1.2</div>
       <h1 id="pageTitle">Label Price Calculator</h1>
       <p id="pageSubtitle">Select the item, material and quantity pricing tier. The sales price is shown instantly without exposing costing information.</p>
     </div>
@@ -489,10 +489,17 @@ const BRYLIX_CUSTOMER_CACHE_MS=2*60*1000;
 const BRYLIX_ORDER_SCAN_CACHE_MS=10*60*1000;
 const BRYLIX_ORDER_SCAN_MAX_PAGES=15;
 const BRYLIX_INVOICE_PAD=5;
-const ERP_DEBUG_MAX=220;
+// Brylix's own Customer List HTML endpoint exposes Contact Number(s), but it is session-protected.
+// Never hard-code PHPSESSID here. The browser must already have a valid ERP session.
+const BRYLIX_INTERNAL_CUSTOMER_LIST_URL='https://erp.softcreation.lk/softcreation/php/customer/list';
+const BRYLIX_INTERNAL_BRANCH_ID='2';
+const BRYLIX_INTERNAL_TOKEN_KEY='sclpcq_brylix_customer_list_token_v1';
+const BRYLIX_INTERNAL_CACHE_MS=10*60*1000;
+const ERP_DEBUG_MAX=260;
 let brylixCustomerRequestSeq=0,erpDebugEntries=[];
 let trackerSelectedErpCustomer=null;
 let brylixOrderScanRows=[],brylixOrderScanAt=0,brylixOrderScanPromise=null;
+let brylixInternalCustomerRows=[],brylixInternalCustomerRowsAt=0,brylixInternalCustomerPromise=null;
 const brylixCustomerCache=new Map(),brylixInvoiceCache=new Map();
 
 function debounce(fn,delay=280){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}}
@@ -502,6 +509,11 @@ function brylixTodayISO(){
   const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Colombo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
   const pick=t=>parts.find(p=>p.type===t)?.value||'';return `${pick('year')}-${pick('month')}-${pick('day')}`
 }
+function brylixInternalToken(){return String(localStorage.getItem(BRYLIX_INTERNAL_TOKEN_KEY)||'').trim()}
+function saveBrylixInternalToken(value){value=String(value||'').trim();if(value)localStorage.setItem(BRYLIX_INTERNAL_TOKEN_KEY,value);else localStorage.removeItem(BRYLIX_INTERNAL_TOKEN_KEY);brylixInternalCustomerRows=[];brylixInternalCustomerRowsAt=0;brylixInternalCustomerPromise=null}
+function normalizeCustomerNameLoose(v){return String(v||'').normalize('NFKD').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'')}
+function htmlCellText(cell){if(!cell)return'';const html=String(cell.innerHTML||'').replace(/<br\s*\/?\s*>/gi,'\n');const box=document.createElement('div');box.innerHTML=html;return String(box.textContent||'').replace(/\u00a0/g,' ').replace(/[ \t]+/g,' ').replace(/\s*\n\s*/g,'\n').trim()}
+function contactNumbersFromCell(cell){const raw=htmlCellText(cell);if(!raw)return'';const lines=raw.split(/\n+/).map(x=>x.trim()).filter(Boolean);const nums=[];for(const line of lines){const matches=line.match(/(?:\+?94|0)?\d[\d ()-]{7,15}\d/g)||[];for(let m of matches){m=String(m).trim().replace(/[ ()-]/g,'');if(/^94\d{9}$/.test(m))m='+'+m;if(!nums.includes(m))nums.push(m)}}return nums.join(' / ')||raw}
 function closeErpResultList(id){const box=$(id);if(!box)return;box.classList.remove('open');box.innerHTML='';const input=box.closest('.erpLookupWrap')?.querySelector('input');if(input)input.setAttribute('aria-expanded','false')}
 function closeAllErpResults(except=''){['erpInvoiceResults','erpTrackerCustomerResults','erpCustomerNameResults','erpCustomerPhoneResults'].forEach(id=>{if(id!==except)closeErpResultList(id)})}
 function openErpResultList(id){const box=$(id);if(!box)return;closeAllErpResults(id);box.classList.add('open');const input=box.closest('.erpLookupWrap')?.querySelector('input');if(input)input.setAttribute('aria-expanded','true')}
@@ -535,6 +547,9 @@ function initErpDebug(){
   $('erpDebugBtn')?.addEventListener('click',openErpDebug);$('erpDebugClose')?.addEventListener('click',closeErpDebug);
   $('erpDebugClear')?.addEventListener('click',()=>{erpDebugEntries=[];const l=$('erpDebugLog');if(l)l.textContent='Log cleared.';const m=$('erpDebugMeta');if(m)m.textContent='Log cleared. Perform a lookup to capture new diagnostics.'});
   $('erpDebugCopy')?.addEventListener('click',copyErpDebug);
+  const tokenInput=$('erpCustomerListToken');if(tokenInput)tokenInput.value=brylixInternalToken();
+  $('erpSaveCustomerListToken')?.addEventListener('click',()=>{saveBrylixInternalToken($('erpCustomerListToken')?.value||'');erpDebugLog('info','ERP Customer List token saved in this browser only',{configured:!!brylixInternalToken()})});
+  $('erpDebugTestPhone')?.addEventListener('click',async()=>{openErpDebug();const id=String($('quoteCustomerName')?.dataset?.erpCustomerId||'').trim(),name=String($('quoteCustomerName')?.value||'').trim();const selected={erpId:id||null,name,source:'brylix'};if(!id&&!name){erpDebugLog('warn','Phone test: select or type a quotation customer first');return}try{const phone=await phoneFromBrylixInternalCustomerList(selected,true);erpDebugLog(phone?'info':'warn','Manual internal Customer List phone test complete',{id:id||'[none]',name,phone:phone||'[none]'})}catch(e){erpDebugLog('error','Manual internal Customer List phone test failed',{message:e.message})}});
   $('erpDebugTestInvoices')?.addEventListener('click',async()=>{
     openErpDebug();const typed=digitsOnly($('trackerInvoice')?.value||'').slice(-3),c=trackerSelectedErpCustomer;
     if(!c?.erpId){erpDebugLog('warn','Invoice test requires ERP customer selection first');return}
@@ -546,7 +561,7 @@ function initErpDebug(){
     if(term.length<2){erpDebugLog('warn','Customer test needs at least 2 typed characters');return}
     try{const rows=await getBrylixCustomerMatches(term,true);erpDebugLog('info','Manual customer test complete',{term,count:rows.length,sample:rows.slice(0,6).map(x=>({id:x.erpId,name:x.name,contact:x.contact,phoneSource:x.phoneSource}))})}catch(e){erpDebugLog('error','Manual customer test failed',{message:e.message})}
   });
-  erpDebugLog('info','ERP diagnostics initialized',{today:brylixTodayISO(),apiBase:BRYLIX_API_BASE,invoiceWorkflow:'select customer → last 3 digits → /invoices'})
+  erpDebugLog('info','ERP diagnostics initialized',{today:brylixTodayISO(),apiBase:BRYLIX_API_BASE,invoiceWorkflow:'select customer → last 3 digits → /invoices',internalCustomerList:'enabled',internalTokenConfigured:!!brylixInternalToken()})
 }
 function brylixRows(result){
   if(Array.isArray(result?.data))return result.data;
@@ -562,6 +577,45 @@ async function brylixGet(path,params={}){
   let json=null;try{json=await res.json()}catch(e){erpDebugLog('error','API returned non-JSON response',{path,status:res.status});throw new Error(`Brylix API ${res.status} returned non-JSON data`)}
   const rows=brylixRows(json);erpDebugLog(res.ok&&json?.success!==false?'info':'error','API response',{path,status:res.status,success:json?.success,message:json?.message,rowCount:rows.length,dataType:Array.isArray(json?.data)?'array':typeof json?.data,sampleKeys:rows[0]?Object.keys(rows[0]).slice(0,25):[]});
   if(!res.ok||!json||json.success===false)throw new Error(json?.message||`Brylix API ${res.status}`);return json
+}
+
+// ----- Brylix internal Customer List HTML (real Contact Number(s) source) -----
+function parseBrylixInternalCustomerList(html){
+  const doc=new DOMParser().parseFromString(String(html||''),'text/html'),table=doc.querySelector('#data-table-new')||doc.querySelector('table'),rows=[];
+  if(!table)return rows;
+  table.querySelectorAll('tbody tr').forEach(tr=>{
+    const td=[...tr.querySelectorAll(':scope > td')];if(td.length<8)return;
+    const id=htmlCellText(td[0]),name=htmlCellText(td[3]).replace(/\s+/g,' ').trim(),contact=contactNumbersFromCell(td[6]),address=htmlCellText(td[7]).replace(/\n+/g,', ').trim(),branch=htmlCellText(td[5]).replace(/\s+/g,' ').trim();
+    if(!id&&!name)return;rows.push({erpId:id,name,contact,address,branch,source:'brylix-internal-list'})
+  });
+  return rows
+}
+async function fetchBrylixInternalCustomerRows(force=false){
+  if(!force&&brylixInternalCustomerRows.length&&(Date.now()-brylixInternalCustomerRowsAt)<BRYLIX_INTERNAL_CACHE_MS)return brylixInternalCustomerRows;
+  if(!force&&brylixInternalCustomerPromise)return brylixInternalCustomerPromise;
+  const token=brylixInternalToken();if(!token)erpDebugLog('info','ERP Customer List token not configured; trying browser ERP session without token first');
+  brylixInternalCustomerPromise=(async()=>{
+    const url=new URL(BRYLIX_INTERNAL_CUSTOMER_LIST_URL);url.searchParams.set('id','0');url.searchParams.set('invoice','');url.searchParams.append('branch[]',BRYLIX_INTERNAL_BRANCH_ID);if(token)url.searchParams.set('token',token);
+    erpDebugLog('info','Trying Brylix internal Customer List HTML',{host:url.host,path:url.pathname,branch:BRYLIX_INTERNAL_BRANCH_ID,credentials:'browser ERP session',token:token?'[configured]':'[not configured]'});
+    let res;try{
+      // Keep this a simple GET. Do not set Cookie or PHPSESSID in JavaScript.
+      res=await fetch(url.toString(),{method:'GET',credentials:'include',cache:'no-store',headers:{Accept:'text/html, */*;q=0.8'}})
+    }catch(err){erpDebugLog('warn','Internal Customer List request blocked or network failed',{message:err.message,likely:'CORS / ERP session cookie / token'});return[]}
+    let text='';try{text=await res.text()}catch(err){erpDebugLog('warn','Could not read internal Customer List response',{status:res.status,message:err.message});return[]}
+    if(!res.ok){erpDebugLog('warn','Internal Customer List returned HTTP error',{status:res.status,length:text.length});return[]}
+    const rows=parseBrylixInternalCustomerList(text);brylixInternalCustomerRows=rows;brylixInternalCustomerRowsAt=Date.now();
+    erpDebugLog(rows.length?'info':'warn','Internal Customer List parsed',{status:res.status,htmlLength:text.length,customerRows:rows.length,sample:rows.slice(0,4).map(x=>({id:x.erpId,name:x.name,contact:x.contact}))});return rows
+  })().finally(()=>{brylixInternalCustomerPromise=null});
+  return brylixInternalCustomerPromise
+}
+async function phoneFromBrylixInternalCustomerList(customer,force=false){
+  if(!customer?.erpId&&!customer?.name)return'';const rows=await fetchBrylixInternalCustomerRows(force);if(!rows.length)return'';
+  const wantedId=String(customer.erpId??'').trim(),wantedName=normalizeCustomerNameLoose(customer.name);let row=null;
+  if(wantedId)row=rows.find(r=>String(r.erpId??'').trim()===wantedId)||null;
+  if(!row&&wantedName)row=rows.find(r=>normalizeCustomerNameLoose(r.name)===wantedName)||null;
+  if(!row&&wantedName)row=rows.find(r=>{const n=normalizeCustomerNameLoose(r.name);return n&&wantedName&&(n.includes(wantedName)||wantedName.includes(n))})||null;
+  if(row?.contact){erpDebugLog('info','Customer mobile recovered from Brylix Customer List HTML',{id:customer.erpId,name:customer.name,matchedId:row.erpId,matchedName:row.name,phone:row.contact,branch:row.branch,address:row.address});return row.contact}
+  erpDebugLog('warn','Customer found/not found in internal list but no Contact Number(s) resolved',{id:customer.erpId,name:customer.name,matched:!!row,matchedId:row?.erpId||'',matchedName:row?.name||''});return''
 }
 
 // ----- Customer search -----
@@ -713,15 +767,18 @@ async function phoneFromUnfilteredOrders(customer){
 }
 function addressPhoneCandidate(a){for(const v of [a?.contact?.number,a?.contact,a?.phone,a?.mobile,a?.contact_number,a?.telephone]){const p=phoneCandidate(v);if(p)return p}return''}
 async function resolveCustomerPhone(customer){
-  if(customer.contact){erpDebugLog('info','Customer phone already present',{id:customer.erpId,name:customer.name,phone:customer.contact,source:customer.phoneSource});return customer.contact}
-  const saved=customerStore().find(c=>String(c?.name||'').trim().toLowerCase()===String(customer?.name||'').trim().toLowerCase()&&String(c?.contact||'').trim());if(saved?.contact){erpDebugLog('info','Customer phone recovered from previous quotation',{id:customer.erpId,name:customer.name,phone:saved.contact});return String(saved.contact).trim()}
-  if(customer.source!=='brylix'||!customer.erpId){erpDebugLog('warn','Selected customer has no ERP ID for mobile fallback',{name:customer.name});return''}
+  if(customer.contact){erpDebugLog('info','Customer phone already present in API search result',{id:customer.erpId,name:customer.name,phone:customer.contact,source:customer.phoneSource});return customer.contact}
+  if(customer.source==='brylix'&&customer.erpId){
+    try{const fromInternal=await phoneFromBrylixInternalCustomerList(customer);if(fromInternal)return fromInternal}catch(err){erpDebugLog('warn','Internal Customer List phone lookup failed',{id:customer.erpId,name:customer.name,message:err.message})}
+  }
+  const saved=customerStore().find(c=>normalizeCustomerNameLoose(c?.name)===normalizeCustomerNameLoose(customer?.name)&&String(c?.contact||'').trim());if(saved?.contact){erpDebugLog('info','Customer phone recovered from previous quotation/local cache',{id:customer.erpId,name:customer.name,phone:saved.contact});return String(saved.contact).trim()}
+  if(customer.source!=='brylix'||!customer.erpId){erpDebugLog('warn','Selected customer has no ERP ID for additional mobile fallback',{name:customer.name});return''}
   const fromOrders=await phoneFromUnfilteredOrders(customer);if(fromOrders)return fromOrders;
-  try{erpDebugLog('info','Unfiltered order scan had no phone; checking ERP addresses',{id:customer.erpId,name:customer.name});const result=await brylixGet(`/customers/${encodeURIComponent(customer.erpId)}/addresses`),addresses=brylixRows(result);for(const a of addresses){const p=addressPhoneCandidate(a);if(p){erpDebugLog('info','Customer phone recovered from address',{id:customer.erpId,phone:p,addressId:a?.id});return p}}erpDebugLog('warn','No phone in customer address response',{id:customer.erpId,addressCount:addresses.length,sample:addresses.slice(0,3)})}catch(err){erpDebugLog('warn','Customer address phone fallback failed',{id:customer.erpId,message:err.message})}
-  erpDebugLog('warn','No phone found in ERP search, saved quotations, unfiltered orders, or addresses',{id:customer.erpId,name:customer.name});return''
+  try{erpDebugLog('info','Order scan had no phone; checking ERP addresses',{id:customer.erpId,name:customer.name});const result=await brylixGet(`/customers/${encodeURIComponent(customer.erpId)}/addresses`),addresses=brylixRows(result);for(const a of addresses){const p=addressPhoneCandidate(a);if(p){erpDebugLog('info','Customer phone recovered from address',{id:customer.erpId,phone:p,addressId:a?.id});return p}}erpDebugLog('warn','No phone in customer address response',{id:customer.erpId,addressCount:addresses.length,sample:addresses.slice(0,3)})}catch(err){erpDebugLog('warn','Customer address phone fallback failed',{id:customer.erpId,message:err.message})}
+  erpDebugLog('warn','No phone found in ERP API, internal Customer List, saved quotations, unfiltered orders, or addresses',{id:customer.erpId,name:customer.name});return''
 }
 async function selectQuotationCustomer(customer){
-  const name=$('quoteCustomerName'),phone=$('quoteCustomerContact');if(!name||!phone){erpDebugLog('error','Quotation customer fields missing from DOM');return}const before={name:name.value,phone:phone.value};name.value=customer.name||'';phone.readOnly=false;phone.disabled=false;phone.removeAttribute('readonly');phone.removeAttribute('disabled');setResultMessage('erpCustomerNameResults','Finding customer mobile from ERP…','loading');
+  const name=$('quoteCustomerName'),phone=$('quoteCustomerContact');if(!name||!phone){erpDebugLog('error','Quotation customer fields missing from DOM');return}const before={name:name.value,phone:phone.value};name.value=customer.name||'';name.dataset.erpCustomerId=String(customer.erpId||'');phone.readOnly=false;phone.disabled=false;phone.removeAttribute('readonly');phone.removeAttribute('disabled');setResultMessage('erpCustomerNameResults','Finding customer mobile from ERP…','loading');
   let resolved=customer.contact||'';if(!resolved)resolved=await resolveCustomerPhone(customer);phone.value=resolved;phone.dataset.erpAutofilled=resolved?'1':'0';if(resolved&&customer.name){try{saveCustomerRecord(customer.name,resolved);erpDebugLog('info','Recovered ERP mobile cached for future quotation searches',{name:customer.name,phone:resolved})}catch(cacheErr){erpDebugLog('warn','Could not cache recovered customer mobile locally',{name:customer.name,message:cacheErr.message})}}closeAllErpResults();updateExistingCustomerQuoteHint();erpDebugLog(resolved?'info':'warn','Quotation customer selected and fields filled',{erpId:customer.erpId,selectedName:customer.name,phoneResolved:resolved||'[none]',phoneEditable:!phone.readOnly&&!phone.disabled,before,after:{name:name.value,phone:phone.value}});if(!resolved){phone.focus();phone.placeholder='No ERP mobile found — enter manually'}
 }
 function renderQuotationCustomerResults(id,rows,term){
@@ -732,7 +789,7 @@ function initBrylixAutocomplete(){
   initErpDebug();const trackerCustomer=$('trackerErpCustomer'),invoice=$('trackerInvoice'),name=$('quoteCustomerName'),phone=$('quoteCustomerContact');
   if(trackerCustomer){const run=debounce(v=>searchCustomerLookup(v,'erpTrackerCustomerResults','tracker'),220);trackerCustomer.addEventListener('input',()=>{if(trackerSelectedErpCustomer&&trackerCustomer.value.trim()!==trackerSelectedErpCustomer.name)clearTrackerCustomerSelection('customer field edited');setTrackerCustomerStatus('Searching ERP customer…');run(trackerCustomer.value)});trackerCustomer.addEventListener('focus',()=>{if(trackerCustomer.value.trim().length>=2)run(trackerCustomer.value)})}
   if(invoice){const run=debounce(v=>searchBrylixInvoices(v),180);invoice.addEventListener('input',()=>{const d=digitsOnly(invoice.value);if(d.length>3&&!/^INV-/i.test(invoice.value))invoice.value=d.slice(-3);run(invoice.value)});invoice.addEventListener('focus',()=>{if(!trackerSelectedErpCustomer?.erpId){setInvoiceLookupStatus('Select ERP customer first',true);$('trackerErpCustomer')?.focus();return}if(/^INV-/i.test(invoice.value))invoice.select();else setInvoiceLookupStatus(`Type the last 3 invoice digits • ${Math.min(digitsOnly(invoice.value).length,3)}/3 entered`)})}
-  if(name){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerNameResults','quotation'),240);name.addEventListener('input',()=>{updateExistingCustomerQuoteHint();run(name.value)});name.addEventListener('focus',()=>{if(name.value.trim().length>=2)run(name.value)})}
+  if(name){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerNameResults','quotation'),240);name.addEventListener('input',()=>{name.dataset.erpCustomerId='';updateExistingCustomerQuoteHint();run(name.value)});name.addEventListener('focus',()=>{if(name.value.trim().length>=2)run(name.value)})}
   if(phone){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerPhoneResults','quotation'),240);phone.addEventListener('input',()=>{phone.dataset.erpAutofilled='0';run(phone.value)});phone.addEventListener('focus',()=>{if(phone.value.trim().length>=2)run(phone.value)})}
   document.addEventListener('pointerdown',e=>{if(!e.target.closest('.erpLookupWrap')&&!e.target.closest('.erpResultList')&&!e.target.closest('.erpDebugPanel'))closeAllErpResults()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAllErpResults();closeErpDebug()}})
 }
@@ -1137,7 +1194,7 @@ function updateQuotationTotal(){const total=quotationLineData().reduce((s,x)=>s+
 function nextQuotationNumber(){const d=new Date(),stamp=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`,prefix=`SCQ-${stamp}-`,nums=quotationStore().map(q=>String(q.quoteNo||'')).filter(x=>x.startsWith(prefix)).map(x=>Number(x.split('-').pop())||0),n=(nums.length?Math.max(...nums):0)+1;return prefix+String(n).padStart(3,'0')}
 function findLatestQuoteForCustomer(name){const k=String(name||'').trim().toLowerCase();return quotationStore().filter(q=>String(q.customerName||'').trim().toLowerCase()===k&&!q.supersededBy).sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0]||null}
 function updateExistingCustomerQuoteHint(){const name=$('quoteCustomerName').value.trim(),latest=findLatestQuoteForCustomer(name),box=$('quoteExistingHint');if(latest&&(!currentQuotationRevisionSource||latest.id!==currentQuotationRevisionSource.id)){box.classList.add('show');$('quoteExistingTitle').textContent=`Latest quotation: ${latest.quoteNo} • v${latest.version||1}`;$('quoteExistingText').textContent=`${formatShortDate(latest.date)} • ${money(latest.totalIncl)} • ${latest.approved?'Customer Approved':'Pending Customer Approval'}`;$('loadLatestRevisionBtn').dataset.quoteId=latest.id}else{box.classList.remove('show');$('loadLatestRevisionBtn').dataset.quoteId=''}}
-function resetQuotationModal(){if(typeof closeAllErpResults==='function')closeAllErpResults();currentQuotationRevisionSource=null;$('quotationModalTitle').textContent='Create Customer Quotation';$('quoteCustomerName').value='';$('quoteCustomerContact').value='';$('quotePreparedBy').value='';$('quoteValidityDays').value='14';$('quoteAttention').value='';$('quoteCommercialNote').value='';$('quoteShowVatBreakdown').checked=false;$('quotationItems').innerHTML='';quotationLineSeq=0;addQuotationItemLine();$('quotationError').textContent='';$('quotationModalStatus').textContent='';$('quoteExistingHint').classList.remove('show');updateQuotationTotal()}
+function resetQuotationModal(){if(typeof closeAllErpResults==='function')closeAllErpResults();currentQuotationRevisionSource=null;$('quotationModalTitle').textContent='Create Customer Quotation';$('quoteCustomerName').value='';$('quoteCustomerName').dataset.erpCustomerId='';$('quoteCustomerContact').value='';$('quotePreparedBy').value='';$('quoteValidityDays').value='14';$('quoteAttention').value='';$('quoteCommercialNote').value='';$('quoteShowVatBreakdown').checked=false;$('quotationItems').innerHTML='';quotationLineSeq=0;addQuotationItemLine();$('quotationError').textContent='';$('quotationModalStatus').textContent='';$('quoteExistingHint').classList.remove('show');updateQuotationTotal()}
 function openQuotationModal(source=null){resetQuotationModal();if(source){currentQuotationRevisionSource=source;$('quotationModalTitle').textContent=`Revise ${source.quoteNo} • v${(source.version||1)+1}`;$('quoteCustomerName').value=source.customerName||'';$('quoteCustomerContact').value=source.contact||'';$('quotePreparedBy').value=source.preparedBy||'';$('quoteValidityDays').value=source.validityDays||14;$('quoteAttention').value=source.attention||'';$('quoteCommercialNote').value=source.commercialNote||'';$('quoteShowVatBreakdown').checked=source.showVatBreakdown===undefined?true:!!source.showVatBreakdown;$('quotationItems').innerHTML='';quotationLineSeq=0;(source.items||[]).forEach(x=>addQuotationItemLine({...x,autoPrice:false}));if(!$('quotationItems').children.length)addQuotationItemLine();updateQuotationTotal()}refreshCustomerDatalist();$('quotationModal').classList.add('show');$('quotationModal').setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setTimeout(()=>$('quoteCustomerName').focus(),80)}
 function closeQuotationModal(){$('quotationModal').classList.remove('show');$('quotationModal').setAttribute('aria-hidden','true');document.body.style.overflow=''}
 function validateQuotation(){const name=$('quoteCustomerName').value.trim(),contact=$('quoteCustomerContact').value.trim(),lines=quotationLineData();if(!name){$('quotationError').textContent='Enter customer / company name.';$('quoteCustomerName').focus();return null}if(!contact){$('quotationError').textContent='Enter customer contact number.';$('quoteCustomerContact').focus();return null}if(!lines.length){$('quotationError').textContent='Add at least one quotation item.';return null}for(const x of lines){const line=document.querySelectorAll('#quotationItems .quotationLine')[x.index];if(!x.item){$('quotationError').textContent=`Select or type Item ${x.index+1}.`;(x.itemSel==='__custom__'?line.querySelector('.quoteLineCustom'):line.querySelector('.quoteLineItem')).focus();return null}if(x.qty<1){$('quotationError').textContent=`Enter quantity for Item ${x.index+1}.`;line.querySelector('.quoteLineQty').focus();return null}if(x.priceIncl<=0){$('quotationError').textContent=`Enter price for Item ${x.index+1}.`;line.querySelector('.quoteLinePrice').focus();return null}}return{name,contact,lines}}
@@ -1215,8 +1272,13 @@ bootstrap();
     </div>
   </div>
   <div class="erpDebugMeta" id="erpDebugMeta">Ready. Select an ERP customer, search an invoice/customer, then check this panel if something does not fill.</div>
+  <div class="erpDebugConfig">
+    <div class="field"><label>ERP Customer List Token — saved only in this browser</label><input id="erpCustomerListToken" type="password" autocomplete="off" placeholder="Paste token from Brylix customer-list request"></div>
+    <button class="btn secondary" id="erpSaveCustomerListToken" type="button">Save Token</button>
+    <button class="btn secondary" id="erpDebugTestPhone" type="button">Test Customer Phone</button>
+  </div>
   <pre class="erpDebugLog" id="erpDebugLog">ERP diagnostics ready.</pre>
-  <div class="erpDebugHint">The API key is never printed in this log. If a lookup fails, copy this log and send it here.</div>
+  <div class="erpDebugHint">Phone lookup priority: API → Brylix Customer List HTML → saved quotation → order scan → address. PHPSESSID is never stored in this file. If the internal list request is blocked by CORS/session-cookie rules, the log will say so.</div>
 </div>
 
 </body>
