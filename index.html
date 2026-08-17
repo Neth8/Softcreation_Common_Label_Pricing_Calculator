@@ -42,6 +42,12 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
 @media(max-width:980px){.quotationTopGrid{grid-template-columns:1fr 1fr}.quotationLineGrid{grid-template-columns:1fr 1fr}.quotationLineGrid .invoiceRemoveBtn{grid-column:1/-1;width:100%}.quoteStats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.quotationTopGrid,.quoteNotesGrid{grid-template-columns:1fr}.quoteStats{grid-template-columns:1fr 1fr}.quoteSearch{min-width:0;width:100%}.quoteToolbarLeft{width:100%}.quoteFilter{flex:1}.quotationCustomerHint{align-items:flex-start;flex-direction:column}.quotationLineGrid{grid-template-columns:1fr}.quotationLineGrid .invoiceRemoveBtn{grid-column:auto}.quotationTotalBar{align-items:flex-start;flex-direction:column}.quotationBody{font-size:8px}.quotationTitleBar{height:30px}.quotationTitleBar b{font-size:14px}}
 
+
+
+/* Brylix ERP touch-friendly autocomplete */
+.erpLookupWrap{position:relative;min-width:0}.erpLookupInput{width:100%}.erpLookupStatus{display:block;margin-top:5px;color:#7dd3fc;font-size:10.5px;line-height:1.4;min-height:15px}.erpLookupStatus.error{color:#fca5a5}.erpResultList{display:none;position:absolute;z-index:180;left:0;right:0;top:calc(100% + 7px);max-height:330px;overflow:auto;overscroll-behavior:contain;border:1px solid #315074;border-radius:15px;background:#091526;box-shadow:0 20px 55px rgba(0,0,0,.48);padding:7px;-webkit-overflow-scrolling:touch}.erpResultList.open{display:block}.erpResultSummary{padding:7px 9px 9px;color:#94a3b8;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.055em;position:sticky;top:-7px;background:#091526;z-index:2}.erpResultItem{width:100%;border:1px solid transparent;background:#0d1d31;color:#f8fafc;border-radius:12px;padding:11px 12px;margin:0 0 6px;text-align:left;cursor:pointer;display:flex;gap:11px;align-items:center;justify-content:space-between;min-height:58px;touch-action:manipulation}.erpResultItem:last-child{margin-bottom:0}.erpResultItem:hover,.erpResultItem:focus{outline:none;border-color:#3b82f6;background:#102844}.erpResultMain{min-width:0;flex:1}.erpResultPrimary{display:block;font-size:13px;font-weight:950;line-height:1.3;color:#f8fafc;overflow-wrap:anywhere}.erpResultSecondary{display:block;margin-top:4px;font-size:10.5px;line-height:1.35;color:#94a3b8;overflow-wrap:anywhere}.erpResultBadge{flex:0 0 auto;display:inline-flex;padding:5px 7px;border-radius:999px;border:1px solid #24527d;background:#102a46;color:#bfdbfe;font-size:9px;font-weight:950;white-space:nowrap}.erpResultEmpty{padding:15px 12px;text-align:center;color:#94a3b8;font-size:11px;line-height:1.5}.erpResultLoading{padding:15px 12px;text-align:center;color:#93c5fd;font-size:11px;font-weight:800}.erpFieldHint{font-size:10px;color:#94a3b8;line-height:1.35;margin-top:4px}
+@media(max-width:680px){.erpResultList{position:fixed;left:10px;right:10px;top:auto;bottom:max(10px,env(safe-area-inset-bottom));max-height:54vh;border-radius:20px;padding:9px;z-index:350;box-shadow:0 -8px 55px rgba(0,0,0,.62)}.erpResultSummary{top:-9px;padding:9px 10px 11px;font-size:10.5px}.erpResultItem{min-height:68px;padding:13px 14px;border-radius:15px;margin-bottom:8px}.erpResultPrimary{font-size:15px}.erpResultSecondary{font-size:11.5px;line-height:1.45}.erpResultBadge{font-size:9.5px;padding:6px 8px}.erpLookupStatus{font-size:10px}.quotationModalCard{overflow:auto}.field input.erpLookupInput{font-size:16px}}
+
 </style>
 </head>
 <body>
@@ -115,16 +121,18 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
         <div class="formgrid">
           <div class="field">
             <label>ERP Invoice No.</label>
-            <input id="trackerInvoice" list="erpInvoiceList" type="text" maxlength="80" placeholder="Type ERP invoice / order no." autocomplete="off">
-            <datalist id="erpInvoiceList"></datalist>
-            <small class="smallMuted" id="erpInvoiceLookupStatus">Brylix ERP • start typing to search recent invoices / orders</small>
+            <div class="erpLookupWrap">
+              <input id="trackerInvoice" class="erpLookupInput" type="text" maxlength="80" placeholder="Type INV-..." autocomplete="off" autocapitalize="characters" spellcheck="false" aria-autocomplete="list" aria-controls="erpInvoiceResults" aria-expanded="false">
+              <div class="erpResultList" id="erpInvoiceResults" role="listbox" aria-label="ERP invoice suggestions"></div>
+            </div>
+            <small class="erpLookupStatus" id="erpInvoiceLookupStatus">Brylix ERP • type at least 2 characters of an INV- number</small>
           </div>
           <div class="field"><label>Sales Person</label><input id="trackerSalesPerson" type="text" maxlength="80" placeholder="Sales person name"></div>
         </div>
         <div class="invoiceItemsHead"><div><span>Invoice Items</span><small>Select an item and quantity. The system price fills automatically and stays editable for the actual ERP invoice price.</small></div><button class="btn secondary" id="addInvoiceItemBtn" type="button">+ Add Another Item</button></div>
         <div class="invoiceItems" id="invoiceItems"></div>
         <div class="invoiceTotalBar"><div><span>Invoice Sales Total</span><small>VAT Inclusive • All invoice lines</small></div><b id="trackerInvoiceTotal">Rs. 0.00</b></div>
-        <div class="actions"><button class="btn primary" id="saveSaleBtn">Save ERP Sale</button><button class="btn ghost" id="clearSaleBtn">Clear Entry</button><span class="status" id="trackerEntryStatus"></span></div><div class="trackerEntryNote">📡 ERP invoice / order references are suggested read-only from Brylix ERP. Invoice item lines remain manual for now. Each saved line contributes to the same daily and monthly sales totals.</div></div>
+        <div class="actions"><button class="btn primary" id="saveSaleBtn">Save ERP Sale</button><button class="btn ghost" id="clearSaleBtn">Clear Entry</button><span class="status" id="trackerEntryStatus"></span></div><div class="trackerEntryNote">📡 ERP invoice numbers are suggested read-only from Brylix ERP. Select an <b>INV-...</b> result, then enter the invoice item lines manually. Saved sales continue to sync through Supabase.</div></div>
       <div class="tableWrap" style="margin-top:15px"><table class="trackerTable"><thead><tr><th>Date</th><th>Invoice</th><th>Sales Person</th><th>Item</th><th>Qty</th><th>Price / Roll</th><th>Sale Value</th><th class="trackerAdminOnly">Admin</th></tr></thead><tbody id="trackerRows"></tbody></table></div>
     </div>
   </section>
@@ -293,17 +301,23 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
   <div class="modalCard quotationModalCard" role="dialog" aria-modal="true" aria-labelledby="quotationModalTitle">
     <div class="modalIcon">📄</div>
     <h3 id="quotationModalTitle">Create Customer Quotation</h3>
-    <p>Build a customer-ready quotation using the saved label price system. Customer details are suggested from Brylix ERP and previous quotations.</p>
+    <p>Build a customer-ready quotation using the saved label price system. Customer details are remembered locally for faster repeat quotations.</p>
     <div class="quotationTopGrid">
       <div class="field">
         <label>Customer / Company Name</label>
-        <input id="quoteCustomerName" list="quoteCustomerList" type="text" maxlength="140" placeholder="Type customer or company name" autocomplete="off">
-        <datalist id="quoteCustomerList"></datalist>
+        <div class="erpLookupWrap">
+          <input id="quoteCustomerName" class="erpLookupInput" type="text" maxlength="140" placeholder="Type customer / company name" autocomplete="off" aria-autocomplete="list" aria-controls="erpCustomerNameResults" aria-expanded="false">
+          <div class="erpResultList" id="erpCustomerNameResults" role="listbox" aria-label="Customer name suggestions"></div>
+        </div>
+        <small class="erpFieldHint">Brylix ERP + previous quotation customers</small>
       </div>
       <div class="field">
         <label>Contact Number</label>
-        <input id="quoteCustomerContact" list="quoteCustomerContactList" type="tel" maxlength="40" placeholder="Type customer contact number" autocomplete="off">
-        <datalist id="quoteCustomerContactList"></datalist>
+        <div class="erpLookupWrap">
+          <input id="quoteCustomerContact" class="erpLookupInput" type="tel" inputmode="tel" maxlength="40" placeholder="Type mobile / contact number" autocomplete="off" aria-autocomplete="list" aria-controls="erpCustomerPhoneResults" aria-expanded="false">
+          <div class="erpResultList" id="erpCustomerPhoneResults" role="listbox" aria-label="Customer mobile number suggestions"></div>
+        </div>
+        <small class="erpFieldHint">Selecting a customer fills this number automatically; you can edit it afterwards.</small>
       </div>
       <div class="field"><label>Prepared By</label><input id="quotePreparedBy" type="text" maxlength="80" placeholder="Sales person name"></div>
       <div class="field"><label>Validity — Days</label><input id="quoteValidityDays" type="number" min="1" max="90" step="1" value="14"></div>
@@ -456,173 +470,120 @@ const money=n=>'Rs. '+Number(n||0).toLocaleString('en-US',{minimumFractionDigits
 const num=id=>Number($(id).value)||0;
 const htmlEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
 
-// ---------- Brylix ERP read-only integration ----------
+// ---------- Brylix ERP read-only lookup ----------
 const BRYLIX_API_BASE='https://softcreation.lk/api/v1';
 const BRYLIX_API_KEY='TEqihZqgTz+qpSzqtsbhcT1aS/bEXlSSyCUDc+HcgIY=';
-const BRYLIX_ORDER_CACHE_MS=120000;
-const BRYLIX_CUSTOMER_CACHE_MS=120000;
-let brylixOrderCache=[];
-let brylixOrderCacheAt=0;
-let brylixOrderLoadPromise=null;
-let brylixCustomerMatches=[];
-let brylixCustomerRequestSeq=0;
+const BRYLIX_ORDER_CACHE_MS=5*60*1000;
+const BRYLIX_CUSTOMER_CACHE_MS=2*60*1000;
+let brylixOrderCache=[],brylixOrderCacheAt=0,brylixOrderLoadPromise=null,brylixCustomerRequestSeq=0;
 const brylixCustomerCache=new Map();
 
-function debounce(fn,delay=250){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}}
+function debounce(fn,delay=280){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}}
 function normalizePhone(v){return String(v||'').replace(/[^0-9+]/g,'')}
-function setBrylixInvoiceStatus(text,error=false){const e=$('erpInvoiceLookupStatus');if(!e)return;e.textContent=text;e.style.color=error?'#fca5a5':'#94a3b8'}
+function closeErpResultList(id){const box=$(id);if(!box)return;box.classList.remove('open');box.innerHTML='';const wrap=box.closest('.erpLookupWrap'),input=wrap?.querySelector('input');if(input)input.setAttribute('aria-expanded','false')}
+function closeAllErpResults(except=''){['erpInvoiceResults','erpCustomerNameResults','erpCustomerPhoneResults'].forEach(id=>{if(id!==except)closeErpResultList(id)})}
+function openErpResultList(id){const box=$(id);if(!box)return;closeAllErpResults(id);box.classList.add('open');const input=box.closest('.erpLookupWrap')?.querySelector('input');if(input)input.setAttribute('aria-expanded','true')}
+function setResultMessage(id,text,kind='empty'){const box=$(id);if(!box)return;box.innerHTML=`<div class="${kind==='loading'?'erpResultLoading':'erpResultEmpty'}">${htmlEsc(text)}</div>`;openErpResultList(id)}
+function setInvoiceLookupStatus(text,isError=false){const e=$('erpInvoiceLookupStatus');if(!e)return;e.textContent=text;e.classList.toggle('error',!!isError)}
 
 async function brylixGet(path,params={}){
   const url=new URL(`${BRYLIX_API_BASE}${path}`);
-  Object.entries(params).forEach(([key,value])=>{if(value!==undefined&&value!==null&&value!=='')url.searchParams.set(key,String(value))});
-  const response=await fetch(url.toString(),{
-    method:'GET',
-    headers:{Accept:'application/json','X-API-Key':BRYLIX_API_KEY},
-    cache:'no-store',
-    credentials:'omit'
-  });
-  let json=null;
-  try{json=await response.json()}catch(e){}
-  if(!response.ok||!json||json.success===false)throw new Error(json?.message||`Brylix API ${response.status}`);
+  Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=='')url.searchParams.set(k,String(v))});
+  const res=await fetch(url.toString(),{method:'GET',headers:{Accept:'application/json','X-API-Key':BRYLIX_API_KEY},cache:'no-store'});
+  let json=null;try{json=await res.json()}catch(e){}
+  if(!res.ok||!json||json.success===false)throw new Error(json?.message||`Brylix API ${res.status}`);
   return json
 }
 
-function brylixOrderNumber(order){
-  return String(
-    order?.invoice_no ??
-    order?.invoice_number ??
-    order?.invoiceNo ??
-    order?.order_no ??
-    order?.order_number ??
-    order?.orderNo ??
-    order?.id ??
-    ''
-  ).trim()
+function normalizeInvoiceCandidate(value){
+  const s=String(value??'').trim();if(!s)return'';
+  const m=s.match(/\bINV\s*[-_\/]?\s*([A-Z0-9][A-Z0-9._\/-]*)/i);if(!m)return'';
+  return `INV-${m[1]}`.replace(/--+/g,'-').toUpperCase()
 }
-
-function brylixDateISO(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return`${y}-${m}-${day}`}
-
+function brylixInvoiceNumber(order){
+  const preferred=['invoice_no','invoice_number','invoiceNo','invoiceNumber','invoice','invoice_code','invoiceCode','reference_no','reference','ref_no','ref','order_no','order_number','number','code'];
+  for(const k of preferred){const found=normalizeInvoiceCandidate(order?.[k]);if(found)return found}
+  const seen=new Set();let answer='';
+  const scan=(v,depth=0)=>{if(answer||depth>3||v===null||v===undefined)return;if(typeof v==='string'||typeof v==='number'){const f=normalizeInvoiceCandidate(v);if(f)answer=f;return}if(typeof v!=='object'||seen.has(v))return;seen.add(v);for(const [k,val] of Object.entries(v)){if(/invoice|reference|order|number|code|ref/i.test(k))scan(val,depth+1);if(answer)return}for(const val of Object.values(v)){scan(val,depth+1);if(answer)return}};
+  scan(order);return answer
+}
 async function loadBrylixOrders(force=false){
   if(!force&&brylixOrderCache.length&&(Date.now()-brylixOrderCacheAt)<BRYLIX_ORDER_CACHE_MS)return brylixOrderCache;
-  if(!force&&brylixOrderLoadPromise)return brylixOrderLoadPromise;
+  if(brylixOrderLoadPromise)return brylixOrderLoadPromise;
   brylixOrderLoadPromise=(async()=>{
-    setBrylixInvoiceStatus('Brylix ERP • loading recent invoices / orders…');
-    const all=[],end=new Date(),start=new Date();
-    start.setDate(start.getDate()-120);
-    for(let page=1;page<=5;page++){
-      const result=await brylixGet('/orders',{per_page:100,page,start_date:brylixDateISO(start),end_date:brylixDateISO(end)});
-      const rows=Array.isArray(result.data)?result.data:[];
-      all.push(...rows);
-      const total=Number(result.meta?.total||0);
-      if(rows.length<100||(total>0&&all.length>=total))break
+    const all=[];setInvoiceLookupStatus('Brylix ERP • loading recent INV- references…');
+    for(let page=1;page<=8;page++){
+      const result=await brylixGet('/orders',{per_page:100,page});
+      const rows=Array.isArray(result.data)?result.data:[];all.push(...rows);
+      const total=Number(result.meta?.total||0);if(rows.length<100||(total>0&&all.length>=total))break
     }
-    brylixOrderCache=all;
-    brylixOrderCacheAt=Date.now();
-    setBrylixInvoiceStatus(`Brylix ERP • ${all.length.toLocaleString('en-US')} recent invoice / order reference${all.length===1?'':'s'} loaded`);
+    brylixOrderCache=all;brylixOrderCacheAt=Date.now();
+    const invCount=all.filter(o=>brylixInvoiceNumber(o)).length;
+    setInvoiceLookupStatus(invCount?`Brylix ERP • ${invCount.toLocaleString('en-US')} INV- references loaded`:'Brylix ERP connected • no INV- references were returned by /orders',!invCount);
     return all
-  })();
-  try{return await brylixOrderLoadPromise}
-  finally{brylixOrderLoadPromise=null}
+  })().finally(()=>{brylixOrderLoadPromise=null});
+  return brylixOrderLoadPromise
+}
+function invoiceCustomerName(o){return String(o?.customer?.name||o?.customer_name||o?.customerName||'').trim()}
+function renderInvoiceResults(term){
+  const box=$('erpInvoiceResults');if(!box)return;
+  const q=String(term||'').trim().toUpperCase();
+  const seen=new Set(),matches=[];
+  for(const o of brylixOrderCache){const inv=brylixInvoiceNumber(o);if(!inv||seen.has(inv))continue;if(q&&!inv.includes(q))continue;seen.add(inv);matches.push({inv,order:o});if(matches.length>=30)break}
+  if(!matches.length){setResultMessage('erpInvoiceResults',q?'No matching INV- invoice found in the recent Brylix orders.':'Type an INV- number to search.');return}
+  box.innerHTML=`<div class="erpResultSummary">${matches.length} invoice match${matches.length===1?'':'es'} • tap to select</div>`;
+  matches.forEach(({inv,order})=>{
+    const btn=document.createElement('button');btn.type='button';btn.className='erpResultItem';btn.setAttribute('role','option');
+    const customer=invoiceCustomerName(order),date=String(order?.date||order?.created_at||''),total=Number(order?.total||0);
+    const meta=[customer,date,total?money(total):''].filter(Boolean).join(' • ');
+    btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(inv)}</span><span class="erpResultSecondary">${htmlEsc(meta||'Brylix ERP invoice')}</span></span><span class="erpResultBadge">ERP</span>`;
+    btn.addEventListener('pointerdown',e=>e.preventDefault());btn.addEventListener('click',()=>{$('trackerInvoice').value=inv;closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Selected ${inv} from Brylix ERP`)});box.appendChild(btn)
+  });openErpResultList('erpInvoiceResults')
+}
+async function searchBrylixInvoices(term){
+  term=String(term||'').trim();if(term.length<2){closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus('Brylix ERP • type at least 2 characters of an INV- number');return}
+  setResultMessage('erpInvoiceResults','Searching Brylix invoices…','loading');
+  try{await loadBrylixOrders(false);renderInvoiceResults(term)}catch(err){console.error('Brylix invoice lookup failed:',err);closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Brylix ERP unavailable • ${err.message}`,true)}
 }
 
-function renderBrylixInvoiceSuggestions(term=''){
-  const list=$('erpInvoiceList');if(!list)return;
-  const search=String(term||'').trim().toLowerCase();
-  const matches=brylixOrderCache.filter(order=>{
-    const number=brylixOrderNumber(order).toLowerCase();
-    const customer=String(order?.customer?.name||'').toLowerCase();
-    return !search||number.includes(search)||customer.includes(search)
-  }).slice(0,40);
-  list.innerHTML='';
-  matches.forEach(order=>{
-    const number=brylixOrderNumber(order);if(!number)return;
-    const option=document.createElement('option');option.value=number;
-    const label=[];
-    if(order.date)label.push(String(order.date));
-    if(order?.customer?.name)label.push(String(order.customer.name));
-    if(order.total!==undefined&&order.total!==null)label.push(money(order.total));
-    option.label=label.join(' • ');
-    list.appendChild(option)
-  })
+function normalizeBrylixCustomer(c){return{erpId:c?.id??c?.customer_id??null,name:String(c?.name||[c?.f_name,c?.l_name].filter(Boolean).join(' ')||'').trim(),contact:String(c?.phone||c?.mobile||c?.contact||'').trim(),email:String(c?.email||'').trim(),source:'brylix'}}
+function localCustomerMatches(term){const q=String(term||'').trim().toLowerCase(),phoneQ=normalizePhone(term);return customerStore().filter(c=>{const n=String(c.name||'').toLowerCase(),p=normalizePhone(c.contact);return !q||n.includes(q)||(phoneQ&&p.includes(phoneQ))}).map(c=>({...c,source:'quotation'})).slice(0,12)}
+function mergeCustomerRows(...groups){const map=new Map();groups.flat().forEach(c=>{if(!c)return;const name=String(c.name||'').trim(),contact=String(c.contact||'').trim();if(!name&&!contact)return;const key=`${name.toLowerCase()}|${normalizePhone(contact)}`;if(!map.has(key)||c.source==='brylix')map.set(key,{...c,name,contact})});return[...map.values()]}
+async function getBrylixCustomerMatches(term){
+  const key=String(term||'').trim().toLowerCase(),cached=brylixCustomerCache.get(key);if(cached&&(Date.now()-cached.at)<BRYLIX_CUSTOMER_CACHE_MS)return cached.rows;
+  const requestId=++brylixCustomerRequestSeq,result=await brylixGet('/customers',{per_page:20,search:term});if(requestId!==brylixCustomerRequestSeq)return[];
+  const rows=(Array.isArray(result.data)?result.data:[]).map(normalizeBrylixCustomer).filter(c=>c.name||c.contact);brylixCustomerCache.set(key,{at:Date.now(),rows});return rows
 }
-
-async function refreshBrylixInvoiceSuggestions(term=''){
-  try{await loadBrylixOrders(false);renderBrylixInvoiceSuggestions(term)}
-  catch(error){console.error('Brylix order lookup failed:',error);setBrylixInvoiceStatus(`Brylix ERP unavailable • ${error.message}`,true)}
+function selectCustomerResult(customer){
+  $('quoteCustomerName').value=customer.name||'';
+  $('quoteCustomerContact').value=customer.contact||'';
+  $('quoteCustomerContact').readOnly=false;
+  closeAllErpResults();updateExistingCustomerQuoteHint();
 }
-
-function normalizeBrylixCustomer(customer){
-  return{
-    erpId:customer?.id??customer?.customer_id??null,
-    name:String(customer?.name||[customer?.f_name,customer?.l_name].filter(Boolean).join(' ')||'').trim(),
-    contact:String(customer?.phone||customer?.contact||'').trim(),
-    email:String(customer?.email||'').trim(),
-    source:'brylix'
-  }
+function renderCustomerResults(id,rows,term){
+  const box=$(id);if(!box)return;
+  if(!rows.length){setResultMessage(id,`No customer found for “${term}”. You can still type the details manually.`);return}
+  box.innerHTML=`<div class="erpResultSummary">${rows.length} customer match${rows.length===1?'':'es'} • tap to fill name + mobile</div>`;
+  rows.slice(0,30).forEach(c=>{
+    const btn=document.createElement('button');btn.type='button';btn.className='erpResultItem';btn.setAttribute('role','option');
+    const details=[c.contact,c.email].filter(Boolean).join(' • ');
+    btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(c.name||c.contact||'Customer')}</span><span class="erpResultSecondary">${htmlEsc(details||'No mobile number saved')}</span></span><span class="erpResultBadge">${c.source==='brylix'?'ERP':'QUOTE'}</span>`;
+    btn.addEventListener('pointerdown',e=>e.preventDefault());btn.addEventListener('click',()=>selectCustomerResult(c));box.appendChild(btn)
+  });openErpResultList(id)
 }
-
-async function searchBrylixCustomers(term){
-  term=String(term||'').trim();
-  if(term.length<2){brylixCustomerMatches=[];refreshCustomerDatalist();return}
-  const cacheKey=term.toLowerCase(),cached=brylixCustomerCache.get(cacheKey);
-  if(cached&&(Date.now()-cached.at)<BRYLIX_CUSTOMER_CACHE_MS){
-    brylixCustomerMatches=cached.rows;refreshCustomerDatalist();return
-  }
-  const requestId=++brylixCustomerRequestSeq;
-  try{
-    const result=await brylixGet('/customers',{per_page:20,search:term});
-    if(requestId!==brylixCustomerRequestSeq)return;
-    brylixCustomerMatches=(Array.isArray(result.data)?result.data:[]).map(normalizeBrylixCustomer).filter(c=>c.name||c.contact);
-    brylixCustomerCache.set(cacheKey,{at:Date.now(),rows:brylixCustomerMatches});
-    refreshCustomerDatalist()
-  }catch(error){console.error('Brylix customer lookup failed:',error)}
+async function searchCustomerLookup(term,resultId){
+  term=String(term||'').trim();if(term.length<2){closeErpResultList(resultId);return}
+  setResultMessage(resultId,'Searching customers…','loading');
+  const local=localCustomerMatches(term);
+  try{const erp=await getBrylixCustomerMatches(term);renderCustomerResults(resultId,mergeCustomerRows(erp,local),term)}catch(err){console.error('Brylix customer lookup failed:',err);renderCustomerResults(resultId,local,term)}
 }
-
-function combinedCustomerChoices(){
-  const map=new Map();
-  const add=c=>{
-    const name=String(c?.name||'').trim(),contact=String(c?.contact||'').trim();
-    if(!name&&!contact)return;
-    const key=`${name.toLowerCase()}|${normalizePhone(contact)}`;
-    if(!map.has(key))map.set(key,{...c,name,contact})
-  };
-  customerStore().forEach(c=>add({...c,source:'quotation'}));
-  brylixCustomerMatches.forEach(add);
-  return[...map.values()]
-}
-
-function findBrylixCustomerSelection(value){
-  const raw=String(value||'').trim(),nameKey=raw.toLowerCase(),phoneKey=normalizePhone(raw);
-  return combinedCustomerChoices().find(c=>{
-    const customerName=String(c.name||'').trim().toLowerCase(),customerPhone=normalizePhone(c.contact);
-    return customerName===nameKey||(phoneKey&&customerPhone===phoneKey)
-  })||null
-}
-
-function applyBrylixCustomerSelection(value){
-  const customer=findBrylixCustomerSelection(value);if(!customer)return false;
-  if($('quoteCustomerName'))$('quoteCustomerName').value=customer.name||'';
-  if($('quoteCustomerContact'))$('quoteCustomerContact').value=customer.contact||'';
-  updateExistingCustomerQuoteHint();
-  return true
-}
-
 function initBrylixAutocomplete(){
-  const invoice=$('trackerInvoice'),customerName=$('quoteCustomerName'),customerContact=$('quoteCustomerContact');
-  if(invoice){
-    const runInvoiceSearch=debounce(value=>refreshBrylixInvoiceSuggestions(value),180);
-    invoice.addEventListener('focus',()=>refreshBrylixInvoiceSuggestions(invoice.value));
-    invoice.addEventListener('input',()=>runInvoiceSearch(invoice.value))
-  }
-  const runCustomerSearch=debounce(value=>searchBrylixCustomers(value),250);
-  if(customerName){
-    customerName.addEventListener('focus',()=>{if(customerName.value.trim().length>=2)runCustomerSearch(customerName.value)});
-    customerName.addEventListener('input',()=>{if(!applyBrylixCustomerSelection(customerName.value))runCustomerSearch(customerName.value)})
-  }
-  if(customerContact){
-    customerContact.addEventListener('focus',()=>{if(customerContact.value.trim().length>=2)runCustomerSearch(customerContact.value)});
-    customerContact.addEventListener('input',()=>{if(!applyBrylixCustomerSelection(customerContact.value))runCustomerSearch(customerContact.value)})
-  }
+  const invoice=$('trackerInvoice'),name=$('quoteCustomerName'),phone=$('quoteCustomerContact');
+  if(invoice){const run=debounce(v=>searchBrylixInvoices(v),280);invoice.addEventListener('input',()=>run(invoice.value));invoice.addEventListener('focus',()=>{if(invoice.value.trim().length>=2)run(invoice.value)})}
+  if(name){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerNameResults'),280);name.addEventListener('input',()=>{updateExistingCustomerQuoteHint();run(name.value)});name.addEventListener('focus',()=>{if(name.value.trim().length>=2)run(name.value)})}
+  if(phone){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerPhoneResults'),280);phone.addEventListener('input',()=>run(phone.value));phone.addEventListener('focus',()=>{if(phone.value.trim().length>=2)run(phone.value)})}
+  document.addEventListener('pointerdown',e=>{if(!e.target.closest('.erpLookupWrap')&&!e.target.closest('.erpResultList'))closeAllErpResults()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAllErpResults()})
 }
 
 
@@ -960,7 +921,7 @@ function quickLogCurrentSale(){
   addInvoiceItemLine({item:$('size').value,material:$('material').value,qty:'',priceIncl:calc().saleIncl,autoPrice:false});
   openSalesTracker();setTimeout(()=>$('trackerInvoice').focus(),350)
 }
-function clearTrackerEntry(){
+function clearTrackerEntry(){if(typeof closeAllErpResults==='function')closeAllErpResults();
   $('trackerInvoice').value='';$('trackerSalesPerson').value='';$('invoiceItems').innerHTML='';invoiceLineSeq=0;addInvoiceItemLine();$('trackerEntryStatus').textContent='';updateTrackerInvoiceTotal()
 }
 function initSalesTracker(){
@@ -1012,13 +973,7 @@ function quotationStore(){try{const a=JSON.parse(localStorage.getItem(QUOTATION_
 function saveQuotationStore(rows){localStorage.setItem(QUOTATION_STORE_KEY,JSON.stringify(rows))}
 function customerStore(){try{const a=JSON.parse(localStorage.getItem(CUSTOMER_STORE_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveCustomerRecord(name,contact){name=String(name||'').trim();contact=String(contact||'').trim();if(!name)return;const rows=customerStore(),key=name.toLowerCase(),now=new Date().toISOString(),i=rows.findIndex(x=>String(x.name||'').trim().toLowerCase()===key);if(i>=0)rows[i]={...rows[i],name,contact:contact||rows[i].contact||'',updatedAt:now};else rows.push({id:(crypto.randomUUID?crypto.randomUUID():Date.now()+'_'+Math.random()),name,contact,updatedAt:now});localStorage.setItem(CUSTOMER_STORE_KEY,JSON.stringify(rows));refreshCustomerDatalist()}
-function refreshCustomerDatalist(){
-  const rows=typeof combinedCustomerChoices==='function'?combinedCustomerChoices():customerStore();
-  const byName=[...rows].filter(c=>c.name).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
-  const byContact=[...rows].filter(c=>c.contact).sort((a,b)=>String(a.contact).localeCompare(String(b.contact)));
-  if($('quoteCustomerList'))$('quoteCustomerList').innerHTML=byName.map(c=>`<option value="${htmlEsc(c.name)}">${htmlEsc(c.contact||'')}${c.source==='brylix'?' • ERP':''}</option>`).join('');
-  if($('quoteCustomerContactList'))$('quoteCustomerContactList').innerHTML=byContact.map(c=>`<option value="${htmlEsc(c.contact)}">${htmlEsc(c.name||'')}${c.source==='brylix'?' • ERP':''}</option>`).join('')
-}
+function refreshCustomerDatalist(){/* Customer suggestions are rendered by the mobile-friendly Brylix lookup viewer. */}
 function exactSavedCustomer(name){const k=String(name||'').trim().toLowerCase();return customerStore().find(c=>String(c.name||'').trim().toLowerCase()===k)||null}
 function quotationItemOptions(selected=''){return ['<option value="">Select item</option>',...sizes.map(x=>`<option value="${htmlEsc(x[0])}" ${x[0]===selected?'selected':''}>${htmlEsc(x[0])}</option>`),`<option value="__custom__" ${selected==='__custom__'?'selected':''}>Custom / Other Item</option>`].join('')}
 function quotationMaterialOptions(selected='TT'){return ['TT','DT','DTTOP','BOPP'].map(v=>`<option value="${v}" ${v===selected?'selected':''}>${htmlEsc(materialLabel(v))}</option>`).join('')}
@@ -1031,8 +986,8 @@ function quotationLineData(){return [...document.querySelectorAll('#quotationIte
 function updateQuotationTotal(){const total=quotationLineData().reduce((s,x)=>s+(x.qty*x.priceIncl),0);$('quotationGrandTotal').textContent=money(total);if($('quotationTotalNote'))$('quotationTotalNote').textContent=$('quoteShowVatBreakdown')?.checked?'All Inclusive • VAT breakdown will be shown on PDF':'All Inclusive • VAT breakdown hidden'}
 function nextQuotationNumber(){const d=new Date(),stamp=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`,prefix=`SCQ-${stamp}-`,nums=quotationStore().map(q=>String(q.quoteNo||'')).filter(x=>x.startsWith(prefix)).map(x=>Number(x.split('-').pop())||0),n=(nums.length?Math.max(...nums):0)+1;return prefix+String(n).padStart(3,'0')}
 function findLatestQuoteForCustomer(name){const k=String(name||'').trim().toLowerCase();return quotationStore().filter(q=>String(q.customerName||'').trim().toLowerCase()===k&&!q.supersededBy).sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0]||null}
-function updateExistingCustomerQuoteHint(){const name=$('quoteCustomerName').value.trim(),saved=exactSavedCustomer(name);if(saved&&!$('quoteCustomerContact').value.trim())$('quoteCustomerContact').value=saved.contact||'';const latest=findLatestQuoteForCustomer(name),box=$('quoteExistingHint');if(latest&&(!currentQuotationRevisionSource||latest.id!==currentQuotationRevisionSource.id)){box.classList.add('show');$('quoteExistingTitle').textContent=`Latest quotation: ${latest.quoteNo} • v${latest.version||1}`;$('quoteExistingText').textContent=`${formatShortDate(latest.date)} • ${money(latest.totalIncl)} • ${latest.approved?'Customer Approved':'Pending Customer Approval'}`;$('loadLatestRevisionBtn').dataset.quoteId=latest.id}else{box.classList.remove('show');$('loadLatestRevisionBtn').dataset.quoteId=''}}
-function resetQuotationModal(){currentQuotationRevisionSource=null;$('quotationModalTitle').textContent='Create Customer Quotation';$('quoteCustomerName').value='';$('quoteCustomerContact').value='';$('quotePreparedBy').value='';$('quoteValidityDays').value='14';$('quoteAttention').value='';$('quoteCommercialNote').value='';$('quoteShowVatBreakdown').checked=false;$('quotationItems').innerHTML='';quotationLineSeq=0;addQuotationItemLine();$('quotationError').textContent='';$('quotationModalStatus').textContent='';$('quoteExistingHint').classList.remove('show');updateQuotationTotal()}
+function updateExistingCustomerQuoteHint(){const name=$('quoteCustomerName').value.trim(),latest=findLatestQuoteForCustomer(name),box=$('quoteExistingHint');if(latest&&(!currentQuotationRevisionSource||latest.id!==currentQuotationRevisionSource.id)){box.classList.add('show');$('quoteExistingTitle').textContent=`Latest quotation: ${latest.quoteNo} • v${latest.version||1}`;$('quoteExistingText').textContent=`${formatShortDate(latest.date)} • ${money(latest.totalIncl)} • ${latest.approved?'Customer Approved':'Pending Customer Approval'}`;$('loadLatestRevisionBtn').dataset.quoteId=latest.id}else{box.classList.remove('show');$('loadLatestRevisionBtn').dataset.quoteId=''}}
+function resetQuotationModal(){if(typeof closeAllErpResults==='function')closeAllErpResults();currentQuotationRevisionSource=null;$('quotationModalTitle').textContent='Create Customer Quotation';$('quoteCustomerName').value='';$('quoteCustomerContact').value='';$('quotePreparedBy').value='';$('quoteValidityDays').value='14';$('quoteAttention').value='';$('quoteCommercialNote').value='';$('quoteShowVatBreakdown').checked=false;$('quotationItems').innerHTML='';quotationLineSeq=0;addQuotationItemLine();$('quotationError').textContent='';$('quotationModalStatus').textContent='';$('quoteExistingHint').classList.remove('show');updateQuotationTotal()}
 function openQuotationModal(source=null){resetQuotationModal();if(source){currentQuotationRevisionSource=source;$('quotationModalTitle').textContent=`Revise ${source.quoteNo} • v${(source.version||1)+1}`;$('quoteCustomerName').value=source.customerName||'';$('quoteCustomerContact').value=source.contact||'';$('quotePreparedBy').value=source.preparedBy||'';$('quoteValidityDays').value=source.validityDays||14;$('quoteAttention').value=source.attention||'';$('quoteCommercialNote').value=source.commercialNote||'';$('quoteShowVatBreakdown').checked=source.showVatBreakdown===undefined?true:!!source.showVatBreakdown;$('quotationItems').innerHTML='';quotationLineSeq=0;(source.items||[]).forEach(x=>addQuotationItemLine({...x,autoPrice:false}));if(!$('quotationItems').children.length)addQuotationItemLine();updateQuotationTotal()}refreshCustomerDatalist();$('quotationModal').classList.add('show');$('quotationModal').setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setTimeout(()=>$('quoteCustomerName').focus(),80)}
 function closeQuotationModal(){$('quotationModal').classList.remove('show');$('quotationModal').setAttribute('aria-hidden','true');document.body.style.overflow=''}
 function validateQuotation(){const name=$('quoteCustomerName').value.trim(),contact=$('quoteCustomerContact').value.trim(),lines=quotationLineData();if(!name){$('quotationError').textContent='Enter customer / company name.';$('quoteCustomerName').focus();return null}if(!contact){$('quotationError').textContent='Enter customer contact number.';$('quoteCustomerContact').focus();return null}if(!lines.length){$('quotationError').textContent='Add at least one quotation item.';return null}for(const x of lines){const line=document.querySelectorAll('#quotationItems .quotationLine')[x.index];if(!x.item){$('quotationError').textContent=`Select or type Item ${x.index+1}.`;(x.itemSel==='__custom__'?line.querySelector('.quoteLineCustom'):line.querySelector('.quoteLineItem')).focus();return null}if(x.qty<1){$('quotationError').textContent=`Enter quantity for Item ${x.index+1}.`;line.querySelector('.quoteLineQty').focus();return null}if(x.priceIncl<=0){$('quotationError').textContent=`Enter price for Item ${x.index+1}.`;line.querySelector('.quoteLinePrice').focus();return null}}return{name,contact,lines}}
@@ -1066,7 +1021,7 @@ function shortenPdf(s,n=38){s=pdfAscii(s);return s.length>n?s.slice(0,n-3)+'...'
 function quotationPdfStreams(q,docType='quotation'){const chunks=quotePageChunks(q),streams=[],pageCount=chunks.length,special=(q.items||[]).some(x=>x.special),showVat=q.showVatBreakdown===undefined?true:!!q.showVatBreakdown,isProforma=docType==='proforma',docTitle=isProforma?'PRO FORMA INVOICE':'QUOTATION';chunks.forEach((items,pi)=>{let s=`q 595.28 0 0 841.89 0 0 cm /Im1 Do Q\n`,y=151;s+=pdfRectCmd(40,y,515,31,'.92 .98 .98','.04 .47 .49');s+=pdfTextCmd(51,y+21,18,docTitle,true,'.03 .35 .37');s+=pdfTextCmd(391,y+20,9,`${q.quoteNo} | v${q.version||1}${pageCount>1?` | Page ${pi+1}/${pageCount}`:''}`,true,'.25 .31 .36');y+=43;if(pi===0){s+=pdfRectCmd(40,y,325,67,'.98 .99 1','.82 .86 .89');s+=pdfTextCmd(51,y+16,7.5,isProforma?'PRO FORMA FOR':'QUOTATION FOR',true,'.39 .45 .52');s+=pdfTextCmd(51,y+32,11.5,shortenPdf(q.customerName,45),true,'.07 .10 .15');s+=pdfTextCmd(51,y+48,9,q.contact,false,'.25 .31 .36');if(q.attention)s+=pdfTextCmd(51,y+61,8.2,shortenPdf(q.attention,48),false,'.25 .31 .36');s+=pdfRectCmd(376,y,179,67,'.98 .99 1','.82 .86 .89');s+=pdfTextCmd(387,y+16,7.5,'REFERENCE',true,'.39 .45 .52');s+=pdfTextCmd(387,y+31,9.5,q.quoteNo,true,'.07 .10 .15');s+=pdfTextCmd(387,y+45,8.5,`Date: ${formatShortDate(q.date)}`,false,'.25 .31 .36');s+=pdfTextCmd(387,y+58,8.5,`Validity: ${q.validityDays||14} days`,false,'.25 .31 .36');y+=80}const xs=[40,64,274,339,384,467,555],headers=['#','ITEM / DESCRIPTION','MATERIAL','QTY','PRICE / ROLL','AMOUNT'];s+=`.04 .44 .46 rg 40 ${(841.89-y-23).toFixed(2)} 515 23 re f\n`;headers.forEach((h,i)=>{const x=xs[i]+5;s+=pdfTextCmd(x,y+15,7.4,h,true,'1 1 1')});y+=23;items.forEach((x,ri)=>{const rowH=34;s+=`1 1 1 rg .83 .87 .9 RG .45 w 40 ${(841.89-y-rowH).toFixed(2)} 515 ${rowH} re B\n`;s+=pdfTextCmd(45,y+14,8,String(pi*8+ri+1),false,'.12 .16 .22');s+=pdfTextCmd(69,y+13,8.5,shortenPdf(x.item,42),true,'.07 .10 .15');if(x.special)s+=pdfTextCmd(69,y+26,6.6,'Customer-Specific Commercial Price',false,'.57 .25 .04');s+=pdfTextCmd(279,y+18,7.8,materialLabel(x.material||''),false,'.18 .23 .30');s+=pdfTextCmd(344,y+18,7.8,String(Number(x.qty||0).toLocaleString('en-US')),false,'.18 .23 .30');s+=pdfTextCmd(389,y+18,7.8,money(x.priceIncl),false,'.18 .23 .30');s+=pdfTextCmd(472,y+18,7.8,money((Number(x.qty)||0)*(Number(x.priceIncl)||0)),true,'.07 .10 .15');y+=rowH});if(pi===pageCount-1){y+=10;const tx=367,tw=188,th=23;if(showVat){s+=pdfRectCmd(tx,y,tw,th*3,'.99 .99 1','.82 .86 .89');s+=pdfTextCmd(tx+8,y+15,7.8,'Sub Total (Ex. VAT)',false,'.25 .31 .36');s+=pdfTextCmd(tx+112,y+15,8.2,money(q.totalEx),true,'.07 .10 .15');s+=pdfLineCmd(tx,y+th,tx+tw,y+th,.45,'.88 .9 .92');s+=pdfTextCmd(tx+8,y+th+15,7.8,`VAT ${Number(q.vatRate||0).toFixed(0)}%`,false,'.25 .31 .36');s+=pdfTextCmd(tx+112,y+th+15,8.2,money(q.vatAmount),true,'.07 .10 .15');s+=`.91 .99 1 rg .04 .47 .49 RG .7 w ${tx} ${(841.89-y-th*3).toFixed(2)} ${tw} ${th} re B\n`;s+=pdfTextCmd(tx+8,y+th*2+15,8.5,'GRAND TOTAL',true,'.03 .35 .37');s+=pdfTextCmd(tx+112,y+th*2+15,9,money(q.totalIncl),true,'.03 .35 .37');y+=th*3+14}else{s+=pdfRectCmd(tx,y,tw,th,'.91 .99 1','.04 .47 .49');s+=pdfTextCmd(tx+8,y+15,8.5,'TOTAL - ALL INCLUSIVE',true,'.03 .35 .37');s+=pdfTextCmd(tx+112,y+15,9,money(q.totalIncl),true,'.03 .35 .37');y+=th+14}s+=pdfTextCmd(40,y,8.2,'Commercial Terms',true,'.03 .35 .37');y+=13;const terms=[showVat?'VAT is shown separately in the quotation summary.':'Prices shown are confirmed all-inclusive customer prices.',`Quotation validity: ${q.validityDays||14} days from the quotation date.`,`Supply is subject to stock availability and/or the confirmed production schedule.`];if(isProforma)terms[1]=`Issued from customer-approved quotation ${q.quoteNo}; this Pro Forma Invoice is not a tax invoice.`;if(special)terms.push('Customer-Specific Commercial Price has been applied to one or more quoted items.');if(q.commercialNote)terms.push(shortenPdf(q.commercialNote,100));terms.slice(0,5).forEach(t=>{s+=pdfTextCmd(48,y,7.2,'- '+shortenPdf(t,105),false,'.25 .31 .36');y+=11})}if(isProforma){s+=pdfTextCmd(76,754,6.7,'This Pro Forma Invoice has been electronically generated by SoftCreation (Pvt) Ltd from a customer-approved quotation.',false,'.43 .48 .55');s+=pdfTextCmd(143,764,6.7,'It is issued for order confirmation and is not a tax invoice.',false,'.43 .48 .55')}else{s+=pdfTextCmd(74,754,6.7,'This quotation has been electronically generated by SoftCreation (Pvt) Ltd for commercial reference.',false,'.43 .48 .55');s+=pdfTextCmd(91,764,6.7,'Final order processing is subject to customer confirmation and agreed commercial terms.',false,'.43 .48 .55')}streams.push(s)});return streams}
 function makeQuotationPdfBytes(q,docType='quotation'){const objs=[null],add=x=>(objs.push(x),objs.length-1),set=(id,x)=>objs[id]=x,cat=add(''),pages=add(''),f1=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'),f2=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'),imgBytes=b64Bytes(LETTERHEAD_FLATE_B64),img=add(concatBytes([asciiBytes(`<< /Type /XObject /Subtype /Image /Width ${LETTERHEAD_PIXEL_W} /Height ${LETTERHEAD_PIXEL_H} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /FlateDecode /Length ${imgBytes.length} >>\nstream\n`),imgBytes,asciiBytes('\nendstream')])),pageIds=[];quotationPdfStreams(q,docType).forEach(stream=>{const sb=asciiBytes(stream),content=add(concatBytes([asciiBytes(`<< /Length ${sb.length} >>\nstream\n`),sb,asciiBytes('\nendstream')])),page=add(`<< /Type /Page /Parent ${pages} 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> /XObject << /Im1 ${img} 0 R >> >> /Contents ${content} 0 R >>`);pageIds.push(page)});set(pages,`<< /Type /Pages /Count ${pageIds.length} /Kids [${pageIds.map(id=>`${id} 0 R`).join(' ')}] >>`);set(cat,`<< /Type /Catalog /Pages ${pages} 0 R >>`);const header=asciiBytes('%PDF-1.4\n%SCQ\n'),parts=[header],offsets=[0];let offset=header.length;for(let i=1;i<objs.length;i++){offsets[i]=offset;const body=typeof objs[i]==='string'?asciiBytes(objs[i]):objs[i],part=concatBytes([asciiBytes(`${i} 0 obj\n`),body,asciiBytes('\nendobj\n')]);parts.push(part);offset+=part.length}const xrefOffset=offset;let xref=`xref\n0 ${objs.length}\n0000000000 65535 f \n`;for(let i=1;i<objs.length;i++)xref+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';xref+=`trailer\n<< /Size ${objs.length} /Root ${cat} 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;parts.push(asciiBytes(xref));return concatBytes(parts)}
 function downloadQuotationPDF(q,docType='quotation'){if(docType==='proforma'&&!q.approved)return;const bytes=makeQuotationPdfBytes(q,docType),blob=new Blob([bytes],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;const prefix=docType==='proforma'?'SoftCreation_Pro_Forma_Invoice':'SoftCreation_Quotation';a.download=`${prefix}_${sanitizeFileName(q.quoteNo)}_v${q.version||1}_${sanitizeFileName(q.customerName)}.pdf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
-function initQuotationManager(){if(!$('newQuotationBtn'))return;$('newQuotationBtn').onclick=()=>openQuotationModal();$('addQuotationItemBtn').onclick=()=>{addQuotationItemLine();renumberQuotationLines()};$('cancelQuotationBtn').onclick=closeQuotationModal;$('saveQuotationBtn').onclick=()=>saveQuotationAction(false);$('saveDownloadQuotationBtn').onclick=()=>saveQuotationAction(true);$('quoteShowVatBreakdown').addEventListener('change',updateQuotationTotal);$('quotationSearch').addEventListener('input',renderQuotationList);$('quotationStatusFilter').addEventListener('change',renderQuotationList);$('quoteCustomerName').addEventListener('input',()=>{const c=exactSavedCustomer($('quoteCustomerName').value);if(c)$('quoteCustomerContact').value=c.contact||$('quoteCustomerContact').value;updateExistingCustomerQuoteHint()});$('quoteCustomerContact').addEventListener('input',()=>{});$('loadLatestRevisionBtn').onclick=()=>{const id=$('loadLatestRevisionBtn').dataset.quoteId,q=quotationStore().find(x=>x.id===id);if(q)openQuotationModal(q)};$('closeQuotationViewBtn').onclick=closeQuotationView;$('downloadViewedQuotationBtn').onclick=()=>{const q=quotationStore().find(x=>x.id===currentViewedQuotationId);if(q)downloadQuotationPDF(q,'quotation')};$('downloadViewedProformaBtn').onclick=()=>{const q=quotationStore().find(x=>x.id===currentViewedQuotationId);if(q&&q.approved)downloadQuotationPDF(q,'proforma')};$('reviseViewedQuotationBtn').onclick=()=>{const q=quotationStore().find(x=>x.id===currentViewedQuotationId);closeQuotationView();if(q)openQuotationModal(q)};$('quotationViewModal').addEventListener('click',e=>{if(e.target===$('quotationViewModal'))closeQuotationView()});$('confirmQuoteUnapproveBtn').onclick=confirmQuoteUnapprove;$('cancelQuoteUnapproveBtn').onclick=closeQuoteUnapproveModal;$('quoteUnapprovePassword').addEventListener('keydown',e=>{if(e.key==='Enter')confirmQuoteUnapprove()});refreshCustomerDatalist();renderQuotationList()}
+function initQuotationManager(){if(!$('newQuotationBtn'))return;$('newQuotationBtn').onclick=()=>openQuotationModal();$('addQuotationItemBtn').onclick=()=>{addQuotationItemLine();renumberQuotationLines()};$('cancelQuotationBtn').onclick=closeQuotationModal;$('saveQuotationBtn').onclick=()=>saveQuotationAction(false);$('saveDownloadQuotationBtn').onclick=()=>saveQuotationAction(true);$('quoteShowVatBreakdown').addEventListener('change',updateQuotationTotal);$('quotationSearch').addEventListener('input',renderQuotationList);$('quotationStatusFilter').addEventListener('change',renderQuotationList);$('quoteCustomerName').addEventListener('input',updateExistingCustomerQuoteHint);$('quoteCustomerContact').addEventListener('input',()=>{});$('loadLatestRevisionBtn').onclick=()=>{const id=$('loadLatestRevisionBtn').dataset.quoteId,q=quotationStore().find(x=>x.id===id);if(q)openQuotationModal(q)};$('closeQuotationViewBtn').onclick=closeQuotationView;$('downloadViewedQuotationBtn').onclick=()=>{const q=quotationStore().find(x=>x.id===currentViewedQuotationId);if(q)downloadQuotationPDF(q,'quotation')};$('downloadViewedProformaBtn').onclick=()=>{const q=quotationStore().find(x=>x.id===currentViewedQuotationId);if(q&&q.approved)downloadQuotationPDF(q,'proforma')};$('reviseViewedQuotationBtn').onclick=()=>{const q=quotationStore().find(x=>x.id===currentViewedQuotationId);closeQuotationView();if(q)openQuotationModal(q)};$('quotationViewModal').addEventListener('click',e=>{if(e.target===$('quotationViewModal'))closeQuotationView()});$('confirmQuoteUnapproveBtn').onclick=confirmQuoteUnapprove;$('cancelQuoteUnapproveBtn').onclick=closeQuoteUnapproveModal;$('quoteUnapprovePassword').addEventListener('keydown',e=>{if(e.key==='Enter')confirmQuoteUnapprove()});refreshCustomerDatalist();renderQuotationList()}
 
 function openLogin(){if(adminUnlocked){showPage('admin');return}$('adminPassword').value='';$('loginError').textContent='';$('loginModal').classList.add('show');$('loginModal').setAttribute('aria-hidden','false');setTimeout(()=>$('adminPassword').focus(),80)}
 function closeLogin(){$('loginModal').classList.remove('show');$('loginModal').setAttribute('aria-hidden','true')}
