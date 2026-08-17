@@ -645,6 +645,44 @@ function looksLikePhoneValue(v){const raw=String(v??'').trim();if(!raw)return'';
 function deepPhoneFromObject(obj){
   const seen=new Set();let found={phone:'',path:''};const walk=(v,path='root',depth=0,keyHint='')=>{if(found.phone||depth>7||v===null||v===undefined)return;if(typeof v==='string'||typeof v==='number'){if(/phone|mobile|contact|tel|whatsapp/i.test(keyHint)){const p=looksLikePhoneValue(v);if(p)found={phone:p,path}}return}if(typeof v!=='object'||seen.has(v))return;seen.add(v);for(const [k,val] of Object.entries(v))walk(val,`${path}.${k}`,depth+1,k)};walk(obj);return found
 }
+function normalizeCustomerNameForMatch(v){return String(v||'').trim().replace(/\s+/g,' ').toLowerCase()}
+function customerObjectMatch(order,customer){
+  if(!order||!customer)return null;
+  const wantedId=String(customer.erpId??'').trim(),wantedName=normalizeCustomerNameForMatch(customer.name);
+  const candidates=[];
+  const add=(path,obj)=>{if(obj&&typeof obj==='object'&&!Array.isArray(obj))candidates.push({path,object:obj})};
+  add('order.customer',order.customer);
+  add('order.client',order.client);
+  add('order.buyer',order.buyer);
+  add('order.customer_details',order.customer_details);
+  add('order.customerDetail',order.customerDetail);
+  add('order.billing_customer',order.billing_customer);
+  add('order.billing.customer',order.billing?.customer);
+  add('order.shipping.customer',order.shipping?.customer);
+  add('order.contact',order.contact);
+  // Some ERP builds flatten customer data onto the order itself. Build a synthetic customer object for those variants.
+  if(order.customer_id!==undefined||order.customer_name!==undefined||order.customer_phone!==undefined||order.phone!==undefined){
+    candidates.push({path:'order(flat customer fields)',object:{id:order.customer_id,customer_id:order.customer_id,name:order.customer_name||order.customerName||'',phone:order.customer_phone||order.customerPhone||order.phone||order.mobile||order.contact_number||'',mobile:order.customer_mobile||order.mobile||''}})
+  }
+  for(const c of candidates){
+    const obj=c.object,objId=String(obj?.id??obj?.customer_id??obj?.customerId??'').trim(),objName=normalizeCustomerNameForMatch(obj?.name||obj?.customer_name||obj?.company_name||obj?.company||'');
+    if(wantedId&&objId&&wantedId===objId)return c;
+    if(wantedName&&objName&&wantedName===objName)return c;
+  }
+  // Last-resort nested scan: only inspect objects under customer/client/buyer/contact-like keys,
+  // so an order ID cannot accidentally be treated as a customer ID.
+  const seen=new Set();let found=null;
+  const walk=(obj,path='order',depth=0,keyHint='')=>{
+    if(found||!obj||typeof obj!=='object'||depth>5||seen.has(obj))return;seen.add(obj);
+    if(/customer|client|buyer|contact/i.test(keyHint||path)){
+      const objId=String(obj?.id??obj?.customer_id??obj?.customerId??'').trim(),objName=normalizeCustomerNameForMatch(obj?.name||obj?.customer_name||obj?.company_name||obj?.company||'');
+      if((wantedId&&objId&&wantedId===objId)||(wantedName&&objName&&wantedName===objName)){found={path,object:obj};return}
+    }
+    for(const [k,v] of Object.entries(obj)){if(v&&typeof v==='object')walk(v,`${path}.${k}`,depth+1,k)}
+  };
+  walk(order);
+  return found
+}
 function phoneFromOrderRows(rows,customer){
   let matchedOrders=0;
   for(const o of rows){
@@ -684,7 +722,7 @@ async function resolveCustomerPhone(customer){
 }
 async function selectQuotationCustomer(customer){
   const name=$('quoteCustomerName'),phone=$('quoteCustomerContact');if(!name||!phone){erpDebugLog('error','Quotation customer fields missing from DOM');return}const before={name:name.value,phone:phone.value};name.value=customer.name||'';phone.readOnly=false;phone.disabled=false;phone.removeAttribute('readonly');phone.removeAttribute('disabled');setResultMessage('erpCustomerNameResults','Finding customer mobile from ERP…','loading');
-  let resolved=customer.contact||'';if(!resolved)resolved=await resolveCustomerPhone(customer);phone.value=resolved;phone.dataset.erpAutofilled=resolved?'1':'0';closeAllErpResults();updateExistingCustomerQuoteHint();erpDebugLog(resolved?'info':'warn','Quotation customer selected and fields filled',{erpId:customer.erpId,selectedName:customer.name,phoneResolved:resolved||'[none]',phoneEditable:!phone.readOnly&&!phone.disabled,before,after:{name:name.value,phone:phone.value}});if(!resolved){phone.focus();phone.placeholder='No ERP mobile found — enter manually'}
+  let resolved=customer.contact||'';if(!resolved)resolved=await resolveCustomerPhone(customer);phone.value=resolved;phone.dataset.erpAutofilled=resolved?'1':'0';if(resolved&&customer.name){try{saveCustomerRecord(customer.name,resolved);erpDebugLog('info','Recovered ERP mobile cached for future quotation searches',{name:customer.name,phone:resolved})}catch(cacheErr){erpDebugLog('warn','Could not cache recovered customer mobile locally',{name:customer.name,message:cacheErr.message})}}closeAllErpResults();updateExistingCustomerQuoteHint();erpDebugLog(resolved?'info':'warn','Quotation customer selected and fields filled',{erpId:customer.erpId,selectedName:customer.name,phoneResolved:resolved||'[none]',phoneEditable:!phone.readOnly&&!phone.disabled,before,after:{name:name.value,phone:phone.value}});if(!resolved){phone.focus();phone.placeholder='No ERP mobile found — enter manually'}
 }
 function renderQuotationCustomerResults(id,rows,term){
   const box=$(id);if(!box)return;if(!rows.length){setResultMessage(id,`No customer found for “${term}”. You can still type the details manually.`);return}box.innerHTML=`<div class="erpResultSummary">${rows.length} customer match${rows.length===1?'':'es'} • tap to fill name + mobile</div>`;
