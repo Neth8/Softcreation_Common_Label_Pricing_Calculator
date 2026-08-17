@@ -56,7 +56,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
 .admin-mode .erpDebugBtn{
   display:inline-flex!important;
 }
-.erpDebugPanel{display:none;position:fixed;right:16px;bottom:16px;width:min(720px,calc(100vw - 32px));max-height:min(72vh,680px);z-index:700;background:#07111f;border:1px solid #315074;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.68);overflow:hidden}.erpDebugPanel.open{display:flex;flex-direction:column}.erpDebugHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;border-bottom:1px solid #223653;background:#0f1b2d}.erpDebugHead strong{font-size:13px}.erpDebugActions{display:flex;gap:6px;flex-wrap:wrap}.erpDebugActions button{padding:7px 9px;font-size:10px}.erpDebugMeta{padding:9px 13px;border-bottom:1px solid #20334f;color:#93c5fd;font-size:10.5px;line-height:1.5;background:#0a1728}.erpDebugLog{margin:0;padding:12px 13px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.5 Consolas,Monaco,monospace;color:#dbeafe;background:#050c16;min-height:180px}.erpDebugLog .ok{color:#86efac}.erpDebugLog .warn{color:#fde68a}.erpDebugLog .err{color:#fca5a5}.erpDebugHint{padding:9px 13px;border-top:1px solid #20334f;color:#94a3b8;font-size:10px;line-height:1.45;background:#0a1728}.erpDebugConfig{padding:10px 13px;border-top:1px solid #20334f;background:#081321;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:end}.erpDebugConfig .field{gap:5px}.erpDebugConfig .field label{font-size:9px}.erpDebugConfig input{padding:9px 10px;font-size:11px}.erpDebugConfig .btn{padding:9px 10px;font-size:10px;white-space:nowrap}@media(max-width:680px){.erpDebugConfig{grid-template-columns:1fr 1fr}.erpDebugConfig .field{grid-column:1/-1}}
+.erpDebugPanel{display:none;position:fixed;right:16px;bottom:16px;width:min(720px,calc(100vw - 32px));max-height:min(72vh,680px);z-index:700;background:#07111f;border:1px solid #315074;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.68);overflow:hidden}.erpDebugPanel.open{display:none}.admin-mode .erpDebugPanel.open{display:flex;flex-direction:column}.erpDebugHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;border-bottom:1px solid #223653;background:#0f1b2d}.erpDebugHead strong{font-size:13px}.erpDebugActions{display:flex;gap:6px;flex-wrap:wrap}.erpDebugActions button{padding:7px 9px;font-size:10px}.erpDebugMeta{padding:9px 13px;border-bottom:1px solid #20334f;color:#93c5fd;font-size:10.5px;line-height:1.5;background:#0a1728}.erpDebugLog{margin:0;padding:12px 13px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.5 Consolas,Monaco,monospace;color:#dbeafe;background:#050c16;min-height:180px}.erpDebugLog .ok{color:#86efac}.erpDebugLog .warn{color:#fde68a}.erpDebugLog .err{color:#fca5a5}.erpDebugHint{padding:9px 13px;border-top:1px solid #20334f;color:#94a3b8;font-size:10px;line-height:1.45;background:#0a1728}.erpDebugConfig{padding:10px 13px;border-top:1px solid #20334f;background:#081321;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:end}.erpDebugConfig .field{gap:5px}.erpDebugConfig .field label{font-size:9px}.erpDebugConfig input{padding:9px 10px;font-size:11px}.erpDebugConfig .btn{padding:9px 10px;font-size:10px;white-space:nowrap}@media(max-width:680px){.erpDebugConfig{grid-template-columns:1fr 1fr}.erpDebugConfig .field{grid-column:1/-1}}
 @media(max-width:680px){.erpDebugPanel{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));width:auto;max-height:78vh;border-radius:20px}.erpDebugHead{align-items:flex-start;flex-direction:column}.erpDebugActions{width:100%}.erpDebugActions button{flex:1}.erpDebugLog{font-size:10.5px;min-height:220px}.erpDebugBtn{padding:9px 10px!important;font-size:11px!important}}
 
 </style>
@@ -65,7 +65,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
 <div class="wrap">
   <div class="hero appHeader">
     <div>
-      <div class="eyebrow">Softcreation Sales Platform * V.1.5</div>
+      <div class="eyebrow">Softcreation Sales Platform * V.1.6</div>
       <h1 id="pageTitle">Label Price Calculator</h1>
       <p id="pageSubtitle">Select the item, material and quantity pricing tier. The sales price is shown instantly without exposing costing information.</p>
     </div>
@@ -546,7 +546,12 @@ function erpDebugLog(level,message,data){
   const meta=$('erpDebugMeta');if(meta)meta.textContent=`Last event: ${message}`;
   if(level==='error')console.error('[ERP DEBUG]',message,data??'');else if(level==='warn')console.warn('[ERP DEBUG]',message,data??'');else console.log('[ERP DEBUG]',message,data??'')
 }
-function openErpDebug(){const p=$('erpDebugPanel');if(!p)return;p.classList.add('open');p.setAttribute('aria-hidden','false');const log=$('erpDebugLog');if(log){log.textContent=erpDebugEntries.length?erpDebugEntries.join('\n'):'ERP diagnostics ready.';log.scrollTop=log.scrollHeight}}
+function openErpDebug(){
+  if(!adminUnlocked){closeErpDebug();return}
+  const p=$('erpDebugPanel');if(!p)return;
+  p.classList.add('open');p.setAttribute('aria-hidden','false');
+  const log=$('erpDebugLog');if(log){log.textContent=erpDebugEntries.length?erpDebugEntries.join('\n'):'ERP diagnostics ready.';log.scrollTop=log.scrollHeight}
+}
 function closeErpDebug(){const p=$('erpDebugPanel');if(!p)return;p.classList.remove('open');p.setAttribute('aria-hidden','true')}
 async function copyErpDebug(){const text=erpDebugEntries.join('\n')||'ERP diagnostics ready.';try{await navigator.clipboard.writeText(text)}catch(e){const a=document.createElement('textarea');a.value=text;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}erpDebugLog('info','Debug log copied')}
 function initErpDebug(){
@@ -1372,7 +1377,17 @@ async function unlockAdmin(){
   if(hash!==storedPasswordHash()){$('loginError').textContent='Incorrect password.';return}
   adminUnlocked=true;document.body.classList.add('admin-mode');closeLogin();$('adminBtn').textContent='🔓 Admin Panel';$('adminBtn').classList.add('adminUnlocked');update();updateSalesTracker();showPage('admin');renderHolidayAdmin();if($('holidayStatus')){$('holidayStatus').textContent='Holiday controls ready.';$('holidayStatus').style.color='#86efac'}
 }
-function lockAdmin(){adminUnlocked=false;document.body.classList.remove('admin-mode');$('adminBtn').textContent='🔒 Admin Panel';$('adminBtn').classList.remove('adminUnlocked');update();updateSalesTracker();showPage('price')}
+function lockAdmin(){
+  closeErpDebug();
+  closeAllErpResults();
+  adminUnlocked=false;
+  document.body.classList.remove('admin-mode');
+  $('adminBtn').textContent='🔒 Admin Panel';
+  $('adminBtn').classList.remove('adminUnlocked');
+  update();
+  updateSalesTracker();
+  showPage('price')
+}
 
 function settingsObject(){return {
   rateTT:num('rateTT'),rateDT:num('rateDT'),rateDTTOP:num('rateDTTOP'),rateBOPP:num('rateBOPP'),width:num('width'),length:num('length'),vat:num('vat'),core:num('core'),pack:num('pack'),desc:num('desc'),box:num('box'),serviceCharge:num('serviceCharge'),saleCommissionRate:num('saleCommissionRate'),commissionRate:num('commissionRate')
