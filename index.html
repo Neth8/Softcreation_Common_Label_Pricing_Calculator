@@ -56,7 +56,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
 <div class="wrap">
   <div class="hero appHeader">
     <div>
-      <div class="eyebrow">Softcreation Sales Platform . V.1.2</div>
+      <div class="eyebrow">Softcreation Sales Platform * V.1.3</div>
       <h1 id="pageTitle">Label Price Calculator</h1>
       <p id="pageSubtitle">Select the item, material and quantity pricing tier. The sales price is shown instantly without exposing costing information.</p>
     </div>
@@ -312,7 +312,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
   <div class="modalCard quotationModalCard" role="dialog" aria-modal="true" aria-labelledby="quotationModalTitle">
     <div class="modalIcon">📄</div>
     <h3 id="quotationModalTitle">Create Customer Quotation</h3>
-    <p>Build a customer-ready quotation using the saved label price system. Customer details are remembered locally for faster repeat quotations.</p>
+    <p>Build a customer-ready quotation using the saved label price system. Customer/company names can be searched, while the contact number is entered manually.</p>
     <div class="quotationTopGrid">
       <div class="field">
         <label>Customer / Company Name</label>
@@ -324,11 +324,8 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
       </div>
       <div class="field">
         <label>Contact Number</label>
-        <div class="erpLookupWrap">
-          <input id="quoteCustomerContact" class="erpLookupInput" type="tel" inputmode="tel" maxlength="40" placeholder="Type mobile / contact number" autocomplete="off" aria-autocomplete="list" aria-controls="erpCustomerPhoneResults" aria-expanded="false">
-          <div class="erpResultList" id="erpCustomerPhoneResults" role="listbox" aria-label="Customer mobile number suggestions"></div>
-        </div>
-        <small class="erpFieldHint">Selecting a customer auto-fills this number from ERP; it remains fully editable afterwards.</small>
+        <input id="quoteCustomerContact" type="tel" inputmode="tel" maxlength="40" placeholder="Enter customer contact number manually" autocomplete="tel">
+        <small class="erpFieldHint">Enter the contact number manually. This field is not connected to Brylix ERP.</small>
       </div>
       <div class="field"><label>Prepared By</label><input id="quotePreparedBy" type="text" maxlength="80" placeholder="Sales person name"></div>
       <div class="field"><label>Validity — Days</label><input id="quoteValidityDays" type="number" min="1" max="90" step="1" value="14"></div>
@@ -515,7 +512,7 @@ function normalizeCustomerNameLoose(v){return String(v||'').normalize('NFKD').to
 function htmlCellText(cell){if(!cell)return'';const html=String(cell.innerHTML||'').replace(/<br\s*\/?\s*>/gi,'\n');const box=document.createElement('div');box.innerHTML=html;return String(box.textContent||'').replace(/\u00a0/g,' ').replace(/[ \t]+/g,' ').replace(/\s*\n\s*/g,'\n').trim()}
 function contactNumbersFromCell(cell){const raw=htmlCellText(cell);if(!raw)return'';const lines=raw.split(/\n+/).map(x=>x.trim()).filter(Boolean);const nums=[];for(const line of lines){const matches=line.match(/(?:\+?94|0)?\d[\d ()-]{7,15}\d/g)||[];for(let m of matches){m=String(m).trim().replace(/[ ()-]/g,'');if(/^94\d{9}$/.test(m))m='+'+m;if(!nums.includes(m))nums.push(m)}}return nums.join(' / ')||raw}
 function closeErpResultList(id){const box=$(id);if(!box)return;box.classList.remove('open');box.innerHTML='';const input=box.closest('.erpLookupWrap')?.querySelector('input');if(input)input.setAttribute('aria-expanded','false')}
-function closeAllErpResults(except=''){['erpInvoiceResults','erpTrackerCustomerResults','erpCustomerNameResults','erpCustomerPhoneResults'].forEach(id=>{if(id!==except)closeErpResultList(id)})}
+function closeAllErpResults(except=''){['erpInvoiceResults','erpTrackerCustomerResults','erpCustomerNameResults'].forEach(id=>{if(id!==except)closeErpResultList(id)})}
 function openErpResultList(id){const box=$(id);if(!box)return;closeAllErpResults(id);box.classList.add('open');const input=box.closest('.erpLookupWrap')?.querySelector('input');if(input)input.setAttribute('aria-expanded','true')}
 function setResultMessage(id,text,kind='empty'){const box=$(id);if(!box)return;box.innerHTML=`<div class="${kind==='loading'?'erpResultLoading':'erpResultEmpty'}">${htmlEsc(text)}</div>`;openErpResultList(id)}
 function setInvoiceLookupStatus(text,isError=false){const e=$('erpInvoiceLookupStatus');if(!e)return;e.textContent=text;e.classList.toggle('error',!!isError)}
@@ -557,7 +554,7 @@ function initErpDebug(){
     try{const rows=await fetchTodayInvoicesForCustomer(c,true);const mapped=rows.map(r=>({invoice:brylixInvoiceNumber(r),id:r?.id,date:r?.date,customer:r?.customer_name,total:r?.total}));erpDebugLog('info','Manual invoice test complete',{rows:rows.length,matches:typed.length===3?mapped.filter(x=>invoiceLastThree(x.invoice)===typed).length:'not filtered',sample:mapped.slice(0,10)})}catch(e){erpDebugLog('error','Manual invoice test failed',{message:e.message})}
   });
   $('erpDebugTestCustomer')?.addEventListener('click',async()=>{
-    openErpDebug();const term=String($('quoteCustomerName')?.value||$('trackerErpCustomer')?.value||$('quoteCustomerContact')?.value||'').trim();
+    openErpDebug();const term=String($('quoteCustomerName')?.value||$('trackerErpCustomer')?.value||'').trim();
     if(term.length<2){erpDebugLog('warn','Customer test needs at least 2 typed characters');return}
     try{const rows=await getBrylixCustomerMatches(term,true);erpDebugLog('info','Manual customer test complete',{term,count:rows.length,sample:rows.slice(0,6).map(x=>({id:x.erpId,name:x.name,contact:x.contact,phoneSource:x.phoneSource}))})}catch(e){erpDebugLog('error','Manual customer test failed',{message:e.message})}
   });
@@ -778,19 +775,37 @@ async function resolveCustomerPhone(customer){
   erpDebugLog('warn','No phone found in ERP API, internal Customer List, saved quotations, unfiltered orders, or addresses',{id:customer.erpId,name:customer.name});return''
 }
 async function selectQuotationCustomer(customer){
-  const name=$('quoteCustomerName'),phone=$('quoteCustomerContact');if(!name||!phone){erpDebugLog('error','Quotation customer fields missing from DOM');return}const before={name:name.value,phone:phone.value};name.value=customer.name||'';name.dataset.erpCustomerId=String(customer.erpId||'');phone.readOnly=false;phone.disabled=false;phone.removeAttribute('readonly');phone.removeAttribute('disabled');setResultMessage('erpCustomerNameResults','Finding customer mobile from ERP…','loading');
-  let resolved=customer.contact||'';if(!resolved)resolved=await resolveCustomerPhone(customer);phone.value=resolved;phone.dataset.erpAutofilled=resolved?'1':'0';if(resolved&&customer.name){try{saveCustomerRecord(customer.name,resolved);erpDebugLog('info','Recovered ERP mobile cached for future quotation searches',{name:customer.name,phone:resolved})}catch(cacheErr){erpDebugLog('warn','Could not cache recovered customer mobile locally',{name:customer.name,message:cacheErr.message})}}closeAllErpResults();updateExistingCustomerQuoteHint();erpDebugLog(resolved?'info':'warn','Quotation customer selected and fields filled',{erpId:customer.erpId,selectedName:customer.name,phoneResolved:resolved||'[none]',phoneEditable:!phone.readOnly&&!phone.disabled,before,after:{name:name.value,phone:phone.value}});if(!resolved){phone.focus();phone.placeholder='No ERP mobile found — enter manually'}
+  const name=$('quoteCustomerName'),phone=$('quoteCustomerContact');
+  if(!name||!phone){erpDebugLog('error','Quotation customer fields missing from DOM');return}
+  const before={name:name.value,phone:phone.value};
+  name.value=customer.name||'';
+  name.dataset.erpCustomerId=String(customer.erpId||'');
+  closeAllErpResults();
+  updateExistingCustomerQuoteHint();
+  erpDebugLog('info','Quotation customer selected — contact number remains manual',{erpId:customer.erpId,selectedName:customer.name,before,after:{name:name.value,phone:phone.value}});
+  // Contact number is intentionally NOT read from ERP. Staff enters it manually for a new quotation.
+  setTimeout(()=>phone.focus(),60);
 }
 function renderQuotationCustomerResults(id,rows,term){
-  const box=$(id);if(!box)return;if(!rows.length){setResultMessage(id,`No customer found for “${term}”. You can still type the details manually.`);return}box.innerHTML=`<div class="erpResultSummary">${rows.length} customer match${rows.length===1?'':'es'} • tap to fill name + mobile</div>`;
-  rows.slice(0,30).forEach(c=>{const btn=document.createElement('button');btn.type='button';btn.className='erpResultItem';btn.setAttribute('role','option');const details=[c.contact||'Mobile will be recovered after selection',c.email].filter(Boolean).join(' • ');btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(c.name||c.contact||'Customer')}</span><span class="erpResultSecondary">${htmlEsc(details)}</span></span><span class="erpResultBadge">${c.source==='brylix'?'ERP':'QUOTE'}</span>`;btn.addEventListener('pointerdown',e=>e.preventDefault());btn.addEventListener('click',async()=>{btn.disabled=true;await selectQuotationCustomer(c)});box.appendChild(btn)});openErpResultList(id)
+  const box=$(id);if(!box)return;
+  if(!rows.length){setResultMessage(id,`No customer found for “${term}”. You can still type the customer name manually.`);return}
+  box.innerHTML=`<div class="erpResultSummary">${rows.length} customer match${rows.length===1?'':'es'} • tap to fill customer name</div>`;
+  rows.slice(0,30).forEach(c=>{
+    const btn=document.createElement('button');btn.type='button';btn.className='erpResultItem';btn.setAttribute('role','option');
+    const details=[c.email,c.erpId?`ERP ID ${c.erpId}`:'',c.source==='quotation'?'Previous quotation customer':''].filter(Boolean).join(' • ');
+    btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(c.name||'Customer')}</span><span class="erpResultSecondary">${htmlEsc(details||'Customer record')}</span></span><span class="erpResultBadge">${c.source==='brylix'?'ERP':'QUOTE'}</span>`;
+    btn.addEventListener('pointerdown',e=>e.preventDefault());
+    btn.addEventListener('click',async()=>{btn.disabled=true;await selectQuotationCustomer(c)});
+    box.appendChild(btn)
+  });
+  openErpResultList(id)
 }
 function initBrylixAutocomplete(){
-  initErpDebug();const trackerCustomer=$('trackerErpCustomer'),invoice=$('trackerInvoice'),name=$('quoteCustomerName'),phone=$('quoteCustomerContact');
+  initErpDebug();const trackerCustomer=$('trackerErpCustomer'),invoice=$('trackerInvoice'),name=$('quoteCustomerName');
   if(trackerCustomer){const run=debounce(v=>searchCustomerLookup(v,'erpTrackerCustomerResults','tracker'),220);trackerCustomer.addEventListener('input',()=>{if(trackerSelectedErpCustomer&&trackerCustomer.value.trim()!==trackerSelectedErpCustomer.name)clearTrackerCustomerSelection('customer field edited');setTrackerCustomerStatus('Searching ERP customer…');run(trackerCustomer.value)});trackerCustomer.addEventListener('focus',()=>{if(trackerCustomer.value.trim().length>=2)run(trackerCustomer.value)})}
   if(invoice){const run=debounce(v=>searchBrylixInvoices(v),180);invoice.addEventListener('input',()=>{const d=digitsOnly(invoice.value);if(d.length>3&&!/^INV-/i.test(invoice.value))invoice.value=d.slice(-3);run(invoice.value)});invoice.addEventListener('focus',()=>{if(!trackerSelectedErpCustomer?.erpId){setInvoiceLookupStatus('Select ERP customer first',true);$('trackerErpCustomer')?.focus();return}if(/^INV-/i.test(invoice.value))invoice.select();else setInvoiceLookupStatus(`Type the last 3 invoice digits • ${Math.min(digitsOnly(invoice.value).length,3)}/3 entered`)})}
   if(name){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerNameResults','quotation'),240);name.addEventListener('input',()=>{name.dataset.erpCustomerId='';updateExistingCustomerQuoteHint();run(name.value)});name.addEventListener('focus',()=>{if(name.value.trim().length>=2)run(name.value)})}
-  if(phone){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerPhoneResults','quotation'),240);phone.addEventListener('input',()=>{phone.dataset.erpAutofilled='0';run(phone.value)});phone.addEventListener('focus',()=>{if(phone.value.trim().length>=2)run(phone.value)})}
+  // Quotation Contact Number is manual-only by design; no ERP/autocomplete listeners are attached to it.
   document.addEventListener('pointerdown',e=>{if(!e.target.closest('.erpLookupWrap')&&!e.target.closest('.erpResultList')&&!e.target.closest('.erpDebugPanel'))closeAllErpResults()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAllErpResults();closeErpDebug()}})
 }
 
@@ -1026,7 +1041,7 @@ function targetSettings(){
 async function saveTargetSettings(){
   if(!adminUnlocked)return;
   const st={dailyTarget:Number($('targetDailyValue').value)||0,updatedAt:new Date().toISOString()};
-  $('targetSettingsStatus').textContent='Saving to Supabase…';
+  $('targetSettingsStatus').style.color='#86efac';$('targetSettingsStatus').textContent='Saving to Supabase…';
   try{await dbUpsert('target_settings','main',st);localStorage.setItem(TARGET_SETTINGS_KEY,JSON.stringify(st));$('targetSettingsStatus').textContent=`Daily target saved ✓ Monthly target auto-calculated using ${workingDaysInMonth()} working days.`;renderHolidayAdmin();updateSalesTracker();setTimeout(()=>$('targetSettingsStatus').textContent='',2800)}catch(err){console.error(err);setDbStatus('Save Error',false);$('targetSettingsStatus').textContent='Save failed — Supabase was not updated.';$('targetSettingsStatus').style.color='#fca5a5'}
 }
 function updateAdminTargetPeriod(){if($('adminMonthPeriod'))$('adminMonthPeriod').textContent=currentMonthPeriod().label;renderHolidayAdmin()}
@@ -1049,22 +1064,59 @@ function renderHolidayAdmin(){
 }
 async function updateSriLankaHolidays(){
   if(!adminUnlocked)return;
-  const year=new Date().getFullYear(),status=$('holidayStatus');status.textContent='Updating holiday calendar…';status.style.color='#93c5fd';
+  const now=new Date(),year=now.getFullYear(),status=$('holidayStatus'),btn=$('updateHolidaysBtn');
+  if(status){status.textContent='Updating holiday calendar…';status.style.color='#93c5fd'}
+  if(btn){btn.disabled=true;btn.textContent='↻ Updating…'}
   try{
-    const res=await fetch(`${HOLIDAY_API_BASE}/${year}/LK`,{cache:'no-store'});if(!res.ok)throw new Error('Holiday API returned '+res.status);
-    const data=await res.json(),online=(Array.isArray(data)?data:[]).map(h=>({date:String(h.date||''),name:String(h.localName||h.name||'Sri Lanka Public Holiday'),source:'Online public holiday API'}));if(!online.length)throw new Error('No holiday dates returned');
-    const merged=year===2026?mergeHolidays(VERIFIED_2026_HOLIDAYS,online):mergeHolidays(online),store=holidayStore();store[String(year)]={updatedAt:new Date().toISOString(),source:'Online Sri Lanka public-holiday update'+(year===2026?' + verified 2026 fallback':''),holidays:merged};
-    await dbUpsert('holiday_store','main',store);saveHolidayStore(store);status.textContent=`Updated ✓ ${merged.length} holiday dates loaded for ${year}. Review the month before use.`;status.style.color='#86efac';renderHolidayAdmin();updateSalesTracker();
+    const store=holidayStore(),existing=store[String(year)]||{},removed=Array.isArray(existing.removed)?existing.removed:[],existingHolidays=Array.isArray(existing.holidays)?existing.holidays:[];
+    let merged=[],source='';
+
+    if(year===2026){
+      // 2026 is embedded in the app so Admin Update works even when an external holiday API is unavailable/CORS-blocked.
+      // Keep any manually-added dates/names that already exist in the shared store.
+      merged=mergeHolidays(VERIFIED_2026_HOLIDAYS,existingHolidays);
+      source='Verified 2026 Sri Lanka holiday calendar • synced by Admin';
+    }else{
+      // Future-year best effort: use the public holiday API, with a timeout.
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+      try{
+        const res=await fetch(`${HOLIDAY_API_BASE}/${year}/LK`,{cache:'no-store',signal:controller.signal});
+        if(!res.ok)throw new Error('Holiday API returned '+res.status);
+        const data=await res.json();
+        const online=(Array.isArray(data)?data:[]).map(h=>({date:String(h.date||''),name:String(h.localName||h.name||'Sri Lanka Public Holiday'),source:'Online public holiday API'}));
+        if(!online.length)throw new Error('No holiday dates returned');
+        merged=mergeHolidays(online,existingHolidays);
+        source='Online Sri Lanka public-holiday update + saved admin entries';
+      }finally{clearTimeout(timer)}
+    }
+
+    store[String(year)]={...existing,updatedAt:new Date().toISOString(),source,holidays:merged,removed};
+    await dbUpsert('holiday_store','main',store);
+    saveHolidayStore(store);
+    if(status){status.textContent=`Holiday calendar updated ✓ ${holidaysForYearReviewed(year).length} active dates saved for ${year}.`;status.style.color='#86efac'}
+    renderHolidayAdmin();
+    updateSalesTracker();
   }catch(err){
     console.error(err);
-    if(year===2026){const store=holidayStore();store['2026']={updatedAt:new Date().toISOString(),source:'Verified 2026 local fallback (online update unavailable)',holidays:mergeHolidays(VERIFIED_2026_HOLIDAYS,store['2026']?.holidays||[])};try{await dbUpsert('holiday_store','main',store);saveHolidayStore(store)}catch(dbErr){console.error(dbErr)}status.textContent='Online holiday update unavailable — verified 2026 fallback kept. Review the database status.';status.style.color='#fde68a';renderHolidayAdmin();updateSalesTracker()}else{status.textContent='Holiday update failed. No shared database change was made.';status.style.color='#fca5a5'}
+    setDbStatus('Save Error',false);
+    if(status){status.textContent=`Holiday update failed — ${err.name==='AbortError'?'online service timed out':err.message}. Existing saved calendar was kept.`;status.style.color='#fca5a5'}
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='↻ Update Sri Lanka Holidays'}
   }
 }
 async function addManualHoliday(){
-  if(!adminUnlocked)return;const date=$('manualHolidayDate').value,name=$('manualHolidayName').value.trim()||'Company / Sri Lanka Holiday';
+  if(!adminUnlocked)return;
+  const date=$('manualHolidayDate').value,name=$('manualHolidayName').value.trim()||'Company / Sri Lanka Holiday';
   if(!date){$('holidayStatus').textContent='Select a holiday date first.';$('holidayStatus').style.color='#fca5a5';return}
-  const year=date.slice(0,4),store=holidayStore(),existing=store[year]?.holidays||[],holidays=mergeHolidays(existing,{date,name,source:'Manual admin entry'});store[year]={updatedAt:new Date().toISOString(),source:'Saved holiday calendar + manual admin entries',holidays};
-  try{await dbUpsert('holiday_store','main',store);saveHolidayStore(store);$('manualHolidayDate').value='';$('manualHolidayName').value='';$('holidayStatus').textContent='Holiday added ✓';$('holidayStatus').style.color='#86efac';renderHolidayAdmin();updateSalesTracker()}catch(err){console.error(err);setDbStatus('Save Error',false);$('holidayStatus').textContent='Holiday was not saved to Supabase.';$('holidayStatus').style.color='#fca5a5'}
+  const year=date.slice(0,4),store=holidayStore(),existing=store[year]||{},existingHolidays=Array.isArray(existing.holidays)?existing.holidays:[],holidays=mergeHolidays(existingHolidays,{date,name,source:'Manual admin entry'});
+  const removed=(Array.isArray(existing.removed)?existing.removed:[]).filter(d=>d!==date);
+  store[year]={...existing,updatedAt:new Date().toISOString(),source:'Saved holiday calendar + manual admin entries',holidays,removed};
+  try{
+    await dbUpsert('holiday_store','main',store);saveHolidayStore(store);
+    $('manualHolidayDate').value='';$('manualHolidayName').value='';
+    $('holidayStatus').textContent='Holiday added and synced ✓';$('holidayStatus').style.color='#86efac';
+    renderHolidayAdmin();updateSalesTracker()
+  }catch(err){console.error(err);setDbStatus('Save Error',false);$('holidayStatus').textContent='Holiday was not saved to Supabase.';$('holidayStatus').style.color='#fca5a5'}
 }
 async function removeHolidayDate(date){
   if(!adminUnlocked)return;const year=String(date).slice(0,4),store=holidayStore();let list=holidaysForYear(Number(year)).filter(h=>h.date!==date);const removed=store[year]?.removed||[];if(year==='2026'&&!removed.includes(date))removed.push(date);store[year]={...(store[year]||{}),updatedAt:new Date().toISOString(),source:'Admin-reviewed holiday calendar',holidays:list,removed};
@@ -1239,7 +1291,7 @@ async function unlockAdmin(){
   if(!pw){$('loginError').textContent='Enter the admin password.';return}
   const hash=await sha256(pw);
   if(hash!==storedPasswordHash()){$('loginError').textContent='Incorrect password.';return}
-  adminUnlocked=true;document.body.classList.add('admin-mode');closeLogin();$('adminBtn').textContent='🔓 Admin Panel';$('adminBtn').classList.add('adminUnlocked');update();updateSalesTracker();showPage('admin')
+  adminUnlocked=true;document.body.classList.add('admin-mode');closeLogin();$('adminBtn').textContent='🔓 Admin Panel';$('adminBtn').classList.add('adminUnlocked');update();updateSalesTracker();showPage('admin');renderHolidayAdmin();if($('holidayStatus')){$('holidayStatus').textContent='Holiday controls ready.';$('holidayStatus').style.color='#86efac'}
 }
 function lockAdmin(){adminUnlocked=false;document.body.classList.remove('admin-mode');$('adminBtn').textContent='🔒 Admin Panel';$('adminBtn').classList.remove('adminUnlocked');update();updateSalesTracker();showPage('price')}
 
@@ -1278,7 +1330,7 @@ bootstrap();
     <button class="btn secondary" id="erpDebugTestPhone" type="button">Test Customer Phone</button>
   </div>
   <pre class="erpDebugLog" id="erpDebugLog">ERP diagnostics ready.</pre>
-  <div class="erpDebugHint">Phone lookup priority: API → Brylix Customer List HTML → saved quotation → order scan → address. PHPSESSID is never stored in this file. If the internal list request is blocked by CORS/session-cookie rules, the log will say so.</div>
+  <div class="erpDebugHint">Customer-phone tools in this diagnostics panel are test-only. The Quotation Contact Number field is manual-only and is never autofilled from ERP. PHPSESSID is never stored in this file.</div>
 </div>
 
 </body>
