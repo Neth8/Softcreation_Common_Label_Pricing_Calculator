@@ -46,7 +46,9 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
 
 /* Brylix ERP touch-friendly autocomplete */
 .erpLookupWrap{position:relative;min-width:0}.erpLookupInput{width:100%}.erpLookupStatus{display:block;margin-top:5px;color:#7dd3fc;font-size:10.5px;line-height:1.4;min-height:15px}.erpLookupStatus.error{color:#fca5a5}.erpResultList{display:none;position:absolute;z-index:180;left:0;right:0;top:calc(100% + 7px);max-height:330px;overflow:auto;overscroll-behavior:contain;border:1px solid #315074;border-radius:15px;background:#091526;box-shadow:0 20px 55px rgba(0,0,0,.48);padding:7px;-webkit-overflow-scrolling:touch}.erpResultList.open{display:block}.erpResultSummary{padding:7px 9px 9px;color:#94a3b8;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.055em;position:sticky;top:-7px;background:#091526;z-index:2}.erpResultItem{width:100%;border:1px solid transparent;background:#0d1d31;color:#f8fafc;border-radius:12px;padding:11px 12px;margin:0 0 6px;text-align:left;cursor:pointer;display:flex;gap:11px;align-items:center;justify-content:space-between;min-height:58px;touch-action:manipulation}.erpResultItem:last-child{margin-bottom:0}.erpResultItem:hover,.erpResultItem:focus{outline:none;border-color:#3b82f6;background:#102844}.erpResultMain{min-width:0;flex:1}.erpResultPrimary{display:block;font-size:13px;font-weight:950;line-height:1.3;color:#f8fafc;overflow-wrap:anywhere}.erpResultSecondary{display:block;margin-top:4px;font-size:10.5px;line-height:1.35;color:#94a3b8;overflow-wrap:anywhere}.erpResultBadge{flex:0 0 auto;display:inline-flex;padding:5px 7px;border-radius:999px;border:1px solid #24527d;background:#102a46;color:#bfdbfe;font-size:9px;font-weight:950;white-space:nowrap}.erpResultEmpty{padding:15px 12px;text-align:center;color:#94a3b8;font-size:11px;line-height:1.5}.erpResultLoading{padding:15px 12px;text-align:center;color:#93c5fd;font-size:11px;font-weight:800}.erpFieldHint{font-size:10px;color:#94a3b8;line-height:1.35;margin-top:4px}
-@media(max-width:680px){.erpResultList{position:fixed;left:10px;right:10px;top:auto;bottom:max(10px,env(safe-area-inset-bottom));max-height:54vh;border-radius:20px;padding:9px;z-index:350;box-shadow:0 -8px 55px rgba(0,0,0,.62)}.erpResultSummary{top:-9px;padding:9px 10px 11px;font-size:10.5px}.erpResultItem{min-height:68px;padding:13px 14px;border-radius:15px;margin-bottom:8px}.erpResultPrimary{font-size:15px}.erpResultSecondary{font-size:11.5px;line-height:1.45}.erpResultBadge{font-size:9.5px;padding:6px 8px}.erpLookupStatus{font-size:10px}.quotationModalCard{overflow:auto}.field input.erpLookupInput{font-size:16px}}
+@media(max-width:680px){.erpResultList{position:fixed;left:10px;right:10px;top:auto;bottom:max(10px,env(safe-area-inset-bottom));max-height:54vh;border-radius:20px;padding:9px;z-index:350;box-shadow:0 -8px 55px rgba(0,0,0,.62)}.erpResultSummary{top:-9px;padding:9px 10px 11px;font-size:10.5px}.erpResultItem{min-height:68px;padding:13px 14px;border-radius:15px;margin-bottom:8px}.erpResultPrimary{font-size:15px}.erpResultSecondary{font-size:11.5px;line-height:1.45}.erpResultBadge{font-size:9.5px;padding:6px 8px}.erpLookupStatus{font-size:10px}.quotationModalCard{overflow:auto}.field input.erpLookupInput{font-size:16px}}\n/* Brylix ERP diagnostics */
+.erpDebugBtn{min-width:auto!important;padding:10px 12px!important}.erpDebugPanel{display:none;position:fixed;right:16px;bottom:16px;width:min(720px,calc(100vw - 32px));max-height:min(72vh,680px);z-index:700;background:#07111f;border:1px solid #315074;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.68);overflow:hidden}.erpDebugPanel.open{display:flex;flex-direction:column}.erpDebugHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;border-bottom:1px solid #223653;background:#0f1b2d}.erpDebugHead strong{font-size:13px}.erpDebugActions{display:flex;gap:6px;flex-wrap:wrap}.erpDebugActions button{padding:7px 9px;font-size:10px}.erpDebugMeta{padding:9px 13px;border-bottom:1px solid #20334f;color:#93c5fd;font-size:10.5px;line-height:1.5;background:#0a1728}.erpDebugLog{margin:0;padding:12px 13px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.5 Consolas,Monaco,monospace;color:#dbeafe;background:#050c16;min-height:180px}.erpDebugLog .ok{color:#86efac}.erpDebugLog .warn{color:#fde68a}.erpDebugLog .err{color:#fca5a5}.erpDebugHint{padding:9px 13px;border-top:1px solid #20334f;color:#94a3b8;font-size:10px;line-height:1.45;background:#0a1728}
+@media(max-width:680px){.erpDebugPanel{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));width:auto;max-height:78vh;border-radius:20px}.erpDebugHead{align-items:flex-start;flex-direction:column}.erpDebugActions{width:100%}.erpDebugActions button{flex:1}.erpDebugLog{font-size:10.5px;min-height:220px}.erpDebugBtn{padding:9px 10px!important;font-size:11px!important}}
 
 </style>
 </head>
@@ -64,6 +66,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
       <button class="btn navBtn" id="quotationNavBtn" type="button" aria-controls="quotationPage">📄 Quotation</button>
       <button class="btn navBtn" id="adminBtn" type="button">🔒 Admin Panel</button>
       <span class="badge" id="dbStatusBadge" title="Supabase database connection">DB: Connecting…</span>
+      <button class="btn ghost erpDebugBtn" id="erpDebugBtn" type="button" title="Open Brylix ERP diagnostics">🛠 ERP Debug</button>
     </div>
   </div>
 
@@ -122,17 +125,17 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
           <div class="field">
             <label>ERP Invoice No.</label>
             <div class="erpLookupWrap">
-              <input id="trackerInvoice" class="erpLookupInput" type="text" maxlength="80" placeholder="Type INV-..." autocomplete="off" autocapitalize="characters" spellcheck="false" aria-autocomplete="list" aria-controls="erpInvoiceResults" aria-expanded="false">
+              <input id="trackerInvoice" class="erpLookupInput" type="text" maxlength="80" placeholder="Type last 3 invoice digits (e.g. 123)" inputmode="numeric" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="erpInvoiceResults" aria-expanded="false">
               <div class="erpResultList" id="erpInvoiceResults" role="listbox" aria-label="ERP invoice suggestions"></div>
             </div>
-            <small class="erpLookupStatus" id="erpInvoiceLookupStatus">Brylix ERP • type at least 2 characters of an INV- number</small>
+            <small class="erpLookupStatus" id="erpInvoiceLookupStatus">Brylix ERP • type the last 3 digits of today's invoice number</small>
           </div>
           <div class="field"><label>Sales Person</label><input id="trackerSalesPerson" type="text" maxlength="80" placeholder="Sales person name"></div>
         </div>
         <div class="invoiceItemsHead"><div><span>Invoice Items</span><small>Select an item and quantity. The system price fills automatically and stays editable for the actual ERP invoice price.</small></div><button class="btn secondary" id="addInvoiceItemBtn" type="button">+ Add Another Item</button></div>
         <div class="invoiceItems" id="invoiceItems"></div>
         <div class="invoiceTotalBar"><div><span>Invoice Sales Total</span><small>VAT Inclusive • All invoice lines</small></div><b id="trackerInvoiceTotal">Rs. 0.00</b></div>
-        <div class="actions"><button class="btn primary" id="saveSaleBtn">Save ERP Sale</button><button class="btn ghost" id="clearSaleBtn">Clear Entry</button><span class="status" id="trackerEntryStatus"></span></div><div class="trackerEntryNote">📡 ERP invoice numbers are suggested read-only from Brylix ERP. Select an <b>INV-...</b> result, then enter the invoice item lines manually. Saved sales continue to sync through Supabase.</div></div>
+        <div class="actions"><button class="btn primary" id="saveSaleBtn">Save ERP Sale</button><button class="btn ghost" id="clearSaleBtn">Clear Entry</button><span class="status" id="trackerEntryStatus"></span></div><div class="trackerEntryNote">📡 ERP invoice lookup uses <b>today's Brylix ERP records only</b>. Type the <b>last 3 digits</b> of the invoice number, then tap the matching <b>INV-...</b> result. Saved sales continue to sync through Supabase. Saved sales continue to sync through Supabase.</div></div>
       <div class="tableWrap" style="margin-top:15px"><table class="trackerTable"><thead><tr><th>Date</th><th>Invoice</th><th>Sales Person</th><th>Item</th><th>Qty</th><th>Price / Roll</th><th>Sale Value</th><th class="trackerAdminOnly">Admin</th></tr></thead><tbody id="trackerRows"></tbody></table></div>
     </div>
   </section>
@@ -317,7 +320,7 @@ button,input,select{font:inherit}.wrap{max-width:1240px;margin:auto;padding:26px
           <input id="quoteCustomerContact" class="erpLookupInput" type="tel" inputmode="tel" maxlength="40" placeholder="Type mobile / contact number" autocomplete="off" aria-autocomplete="list" aria-controls="erpCustomerPhoneResults" aria-expanded="false">
           <div class="erpResultList" id="erpCustomerPhoneResults" role="listbox" aria-label="Customer mobile number suggestions"></div>
         </div>
-        <small class="erpFieldHint">Selecting a customer fills this number automatically; you can edit it afterwards.</small>
+        <small class="erpFieldHint">Selecting a customer auto-fills this number from ERP; it remains fully editable afterwards.</small>
       </div>
       <div class="field"><label>Prepared By</label><input id="quotePreparedBy" type="text" maxlength="80" placeholder="Sales person name"></div>
       <div class="field"><label>Validity — Days</label><input id="quoteValidityDays" type="number" min="1" max="90" step="1" value="14"></div>
@@ -473,24 +476,70 @@ const htmlEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 // ---------- Brylix ERP read-only lookup ----------
 const BRYLIX_API_BASE='https://softcreation.lk/api/v1';
 const BRYLIX_API_KEY='TEqihZqgTz+qpSzqtsbhcT1aS/bEXlSSyCUDc+HcgIY=';
-const BRYLIX_ORDER_CACHE_MS=5*60*1000;
+const BRYLIX_ORDER_CACHE_MS=2*60*1000;
 const BRYLIX_CUSTOMER_CACHE_MS=2*60*1000;
-let brylixOrderCache=[],brylixOrderCacheAt=0,brylixOrderLoadPromise=null,brylixCustomerRequestSeq=0;
+const ERP_DEBUG_MAX=180;
+let brylixOrderCache=[],brylixOrderCacheAt=0,brylixOrderCacheDate='',brylixOrderLoadPromise=null,brylixCustomerRequestSeq=0;
+let erpDebugEntries=[];
 const brylixCustomerCache=new Map();
 
 function debounce(fn,delay=280){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}}
 function normalizePhone(v){return String(v||'').replace(/[^0-9+]/g,'')}
+function digitsOnly(v){return String(v||'').replace(/\D/g,'')}
 function closeErpResultList(id){const box=$(id);if(!box)return;box.classList.remove('open');box.innerHTML='';const wrap=box.closest('.erpLookupWrap'),input=wrap?.querySelector('input');if(input)input.setAttribute('aria-expanded','false')}
 function closeAllErpResults(except=''){['erpInvoiceResults','erpCustomerNameResults','erpCustomerPhoneResults'].forEach(id=>{if(id!==except)closeErpResultList(id)})}
 function openErpResultList(id){const box=$(id);if(!box)return;closeAllErpResults(id);box.classList.add('open');const input=box.closest('.erpLookupWrap')?.querySelector('input');if(input)input.setAttribute('aria-expanded','true')}
 function setResultMessage(id,text,kind='empty'){const box=$(id);if(!box)return;box.innerHTML=`<div class="${kind==='loading'?'erpResultLoading':'erpResultEmpty'}">${htmlEsc(text)}</div>`;openErpResultList(id)}
 function setInvoiceLookupStatus(text,isError=false){const e=$('erpInvoiceLookupStatus');if(!e)return;e.textContent=text;e.classList.toggle('error',!!isError)}
 
+function debugSafe(value,depth=0){
+  if(depth>4)return'[depth limit]';
+  if(value===null||value===undefined||typeof value==='number'||typeof value==='boolean')return value;
+  if(typeof value==='string')return value.length>240?value.slice(0,240)+'…':value;
+  if(Array.isArray(value))return value.slice(0,6).map(v=>debugSafe(v,depth+1));
+  if(typeof value==='object'){
+    const out={};for(const [k,v] of Object.entries(value).slice(0,35)){if(/api.?key|authorization|token/i.test(k))out[k]='[redacted]';else out[k]=debugSafe(v,depth+1)}return out
+  }
+  return String(value)
+}
+function erpDebugLog(level,message,data){
+  const time=new Date().toLocaleTimeString('en-GB',{hour12:false});
+  let suffix='';if(data!==undefined){try{suffix=' '+JSON.stringify(debugSafe(data))}catch(e){suffix=' [unserializable data]'}}
+  const line=`[${time}] ${String(level||'INFO').toUpperCase()} ${message}${suffix}`;
+  erpDebugEntries.push(line);if(erpDebugEntries.length>ERP_DEBUG_MAX)erpDebugEntries.splice(0,erpDebugEntries.length-ERP_DEBUG_MAX);
+  const log=$('erpDebugLog');if(log){log.textContent=erpDebugEntries.join('\n');log.scrollTop=log.scrollHeight}
+  const meta=$('erpDebugMeta');if(meta)meta.textContent=`Last event: ${message}`;
+  if(level==='error')console.error('[ERP DEBUG]',message,data??'');else if(level==='warn')console.warn('[ERP DEBUG]',message,data??'');else console.log('[ERP DEBUG]',message,data??'')
+}
+function openErpDebug(){const p=$('erpDebugPanel');if(!p)return;p.classList.add('open');p.setAttribute('aria-hidden','false');const log=$('erpDebugLog');if(log){log.textContent=erpDebugEntries.length?erpDebugEntries.join('\n'):'ERP diagnostics ready.';log.scrollTop=log.scrollHeight}}
+function closeErpDebug(){const p=$('erpDebugPanel');if(!p)return;p.classList.remove('open');p.setAttribute('aria-hidden','true')}
+async function copyErpDebug(){const text=erpDebugEntries.join('\n')||'ERP diagnostics ready.';try{await navigator.clipboard.writeText(text)}catch(e){const a=document.createElement('textarea');a.value=text;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}erpDebugLog('info','Debug log copied')}
+function initErpDebug(){
+  $('erpDebugBtn')?.addEventListener('click',openErpDebug);$('erpDebugClose')?.addEventListener('click',closeErpDebug);
+  $('erpDebugClear')?.addEventListener('click',()=>{erpDebugEntries=[];const l=$('erpDebugLog');if(l)l.textContent='Log cleared.';const m=$('erpDebugMeta');if(m)m.textContent='Log cleared. Perform a lookup to capture new diagnostics.'});
+  $('erpDebugCopy')?.addEventListener('click',copyErpDebug);
+  $('erpDebugTestInvoices')?.addEventListener('click',async()=>{openErpDebug();erpDebugLog('info','Manual test: today invoice API');try{await loadBrylixOrders(true);const mapped=brylixOrderCache.map(o=>findInvoiceCandidate(o)).filter(x=>x.value);erpDebugLog('info','Manual invoice test complete',{today:brylixTodayISO(),orders:brylixOrderCache.length,invoiceRefs:mapped.length,sample:mapped.slice(0,5)})}catch(e){erpDebugLog('error','Manual invoice test failed',{message:e.message})}});
+  $('erpDebugTestCustomer')?.addEventListener('click',async()=>{openErpDebug();const term=String($('quoteCustomerName')?.value||$('quoteCustomerContact')?.value||'').trim();if(term.length<2){erpDebugLog('warn','Customer test needs at least 2 typed characters in Customer Name or Contact Number');return}try{const rows=await getBrylixCustomerMatches(term,true);erpDebugLog('info','Manual customer test complete',{term,count:rows.length,sample:rows.slice(0,5).map(x=>({id:x.erpId,name:x.name,contact:x.contact,phoneSource:x.phoneSource}))})}catch(e){erpDebugLog('error','Manual customer test failed',{message:e.message})}});
+  window.addEventListener('error',e=>erpDebugLog('error','Browser error',{message:e.message,source:e.filename,line:e.lineno,column:e.colno}));
+  window.addEventListener('unhandledrejection',e=>erpDebugLog('error','Unhandled promise rejection',{message:e.reason?.message||String(e.reason||'Unknown rejection')}));
+  erpDebugLog('info','ERP diagnostics initialized',{today:brylixTodayISO(),apiBase:BRYLIX_API_BASE})
+}
+
+function brylixRows(result){
+  if(Array.isArray(result?.data))return result.data;
+  if(Array.isArray(result?.data?.data))return result.data.data;
+  if(Array.isArray(result?.data?.rows))return result.data.rows;
+  if(Array.isArray(result?.data?.customers))return result.data.customers;
+  if(Array.isArray(result?.data?.orders))return result.data.orders;
+  return[]
+}
 async function brylixGet(path,params={}){
   const url=new URL(`${BRYLIX_API_BASE}${path}`);
   Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=='')url.searchParams.set(k,String(v))});
-  const res=await fetch(url.toString(),{method:'GET',headers:{Accept:'application/json','X-API-Key':BRYLIX_API_KEY},cache:'no-store'});
-  let json=null;try{json=await res.json()}catch(e){}
+  const safeUrl=url.toString();erpDebugLog('info','API GET',{path,query:Object.fromEntries(url.searchParams.entries())});
+  let res;try{res=await fetch(safeUrl,{method:'GET',headers:{Accept:'application/json','X-API-Key':BRYLIX_API_KEY},cache:'no-store'})}catch(err){erpDebugLog('error','API network/CORS failure',{path,message:err.message});throw err}
+  let json=null;try{json=await res.json()}catch(e){erpDebugLog('error','API returned non-JSON response',{path,status:res.status});throw new Error(`Brylix API ${res.status} returned non-JSON data`)}
+  const rows=brylixRows(json);erpDebugLog(res.ok&&json?.success!==false?'info':'error','API response',{path,status:res.status,success:json?.success,message:json?.message,rowCount:rows.length,dataType:Array.isArray(json?.data)?'array':typeof json?.data,sampleKeys:rows[0]?Object.keys(rows[0]).slice(0,25):[]});
   if(!res.ok||!json||json.success===false)throw new Error(json?.message||`Brylix API ${res.status}`);
   return json
 }
@@ -500,92 +549,119 @@ function normalizeInvoiceCandidate(value){
   const m=s.match(/\bINV\s*[-_\/]?\s*([A-Z0-9][A-Z0-9._\/-]*)/i);if(!m)return'';
   return `INV-${m[1]}`.replace(/--+/g,'-').toUpperCase()
 }
-function brylixInvoiceNumber(order){
+function findInvoiceCandidate(order){
   const preferred=['invoice_no','invoice_number','invoiceNo','invoiceNumber','invoice','invoice_code','invoiceCode','reference_no','reference','ref_no','ref','order_no','order_number','number','code'];
-  for(const k of preferred){const found=normalizeInvoiceCandidate(order?.[k]);if(found)return found}
-  const seen=new Set();let answer='';
-  const scan=(v,depth=0)=>{if(answer||depth>3||v===null||v===undefined)return;if(typeof v==='string'||typeof v==='number'){const f=normalizeInvoiceCandidate(v);if(f)answer=f;return}if(typeof v!=='object'||seen.has(v))return;seen.add(v);for(const [k,val] of Object.entries(v)){if(/invoice|reference|order|number|code|ref/i.test(k))scan(val,depth+1);if(answer)return}for(const val of Object.values(v)){scan(val,depth+1);if(answer)return}};
+  for(const k of preferred){const found=normalizeInvoiceCandidate(order?.[k]);if(found)return{value:found,path:k}}
+  const seen=new Set();let answer={value:'',path:''};
+  const scan=(v,path='root',depth=0)=>{if(answer.value||depth>4||v===null||v===undefined)return;if(typeof v==='string'||typeof v==='number'){const f=normalizeInvoiceCandidate(v);if(f)answer={value:f,path};return}if(typeof v!=='object'||seen.has(v))return;seen.add(v);for(const [k,val] of Object.entries(v)){if(/invoice|reference|order|number|code|ref/i.test(k))scan(val,`${path}.${k}`,depth+1);if(answer.value)return}for(const [k,val] of Object.entries(v)){scan(val,`${path}.${k}`,depth+1);if(answer.value)return}};
   scan(order);return answer
 }
+function brylixInvoiceNumber(order){return findInvoiceCandidate(order).value}
+function brylixTodayISO(){
+  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Colombo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const pick=t=>parts.find(p=>p.type===t)?.value||'';return `${pick('year')}-${pick('month')}-${pick('day')}`
+}
 async function loadBrylixOrders(force=false){
-  if(!force&&brylixOrderCache.length&&(Date.now()-brylixOrderCacheAt)<BRYLIX_ORDER_CACHE_MS)return brylixOrderCache;
+  const today=brylixTodayISO();
+  if(!force&&brylixOrderCacheDate===today&&(Date.now()-brylixOrderCacheAt)<BRYLIX_ORDER_CACHE_MS)return brylixOrderCache;
   if(brylixOrderLoadPromise)return brylixOrderLoadPromise;
   brylixOrderLoadPromise=(async()=>{
-    const all=[];setInvoiceLookupStatus('Brylix ERP • loading recent INV- references…');
+    const all=[];setInvoiceLookupStatus(`Brylix ERP • loading today's invoices (${today})…`);erpDebugLog('info','Loading today orders',{today});
     for(let page=1;page<=8;page++){
-      const result=await brylixGet('/orders',{per_page:100,page});
-      const rows=Array.isArray(result.data)?result.data:[];all.push(...rows);
-      const total=Number(result.meta?.total||0);if(rows.length<100||(total>0&&all.length>=total))break
+      const result=await brylixGet('/orders',{per_page:100,page,start_date:today,end_date:today});
+      const rows=brylixRows(result);all.push(...rows);
+      const total=Number(result.meta?.total||result.data?.meta?.total||0);if(rows.length<100||(total>0&&all.length>=total))break
     }
-    brylixOrderCache=all;brylixOrderCacheAt=Date.now();
-    const invCount=all.filter(o=>brylixInvoiceNumber(o)).length;
-    setInvoiceLookupStatus(invCount?`Brylix ERP • ${invCount.toLocaleString('en-US')} INV- references loaded`:'Brylix ERP connected • no INV- references were returned by /orders',!invCount);
-    return all
+    brylixOrderCache=all.filter(o=>{const d=String(o?.date||o?.invoice_date||o?.created_at||'').slice(0,10);return !d||d===today});
+    brylixOrderCacheAt=Date.now();brylixOrderCacheDate=today;
+    const mapped=brylixOrderCache.map(o=>findInvoiceCandidate(o)).filter(x=>x.value),paths=[...new Set(mapped.map(x=>x.path))];
+    erpDebugLog('info','Today order mapping complete',{today,records:brylixOrderCache.length,invoiceRefs:mapped.length,invoiceFieldPaths:paths,sampleInvoiceRefs:mapped.slice(0,5)});
+    setInvoiceLookupStatus(mapped.length?`Brylix ERP • ${mapped.length} INV invoice${mapped.length===1?'':'s'} available today • type last 3 digits`:`Brylix ERP connected • no INV- invoice reference found in today's order response`,!mapped.length);
+    return brylixOrderCache
   })().finally(()=>{brylixOrderLoadPromise=null});
   return brylixOrderLoadPromise
 }
 function invoiceCustomerName(o){return String(o?.customer?.name||o?.customer_name||o?.customerName||'').trim()}
+function invoiceLastThree(inv){const d=digitsOnly(String(inv||'').replace(/^INV[-_\/]?/i,''));return d.slice(-3)}
 function renderInvoiceResults(term){
   const box=$('erpInvoiceResults');if(!box)return;
-  const q=String(term||'').trim().toUpperCase();
-  const seen=new Set(),matches=[];
-  for(const o of brylixOrderCache){const inv=brylixInvoiceNumber(o);if(!inv||seen.has(inv))continue;if(q&&!inv.includes(q))continue;seen.add(inv);matches.push({inv,order:o});if(matches.length>=30)break}
-  if(!matches.length){setResultMessage('erpInvoiceResults',q?'No matching INV- invoice found in the recent Brylix orders.':'Type an INV- number to search.');return}
-  box.innerHTML=`<div class="erpResultSummary">${matches.length} invoice match${matches.length===1?'':'es'} • tap to select</div>`;
+  const typedDigits=digitsOnly(term);if(typedDigits.length<3){closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Type the last 3 invoice digits • ${typedDigits.length}/3 entered`);return}
+  const last3=typedDigits.slice(-3),seen=new Set(),matches=[];
+  for(const o of brylixOrderCache){
+    const found=findInvoiceCandidate(o),inv=found.value;if(!inv||seen.has(inv))continue;if(!/^INV-[A-Z0-9._\/-]+$/i.test(inv))continue;if(invoiceLastThree(inv)!==last3)continue;
+    seen.add(inv);matches.push({inv,order:o,path:found.path});if(matches.length>=40)break
+  }
+  erpDebugLog(matches.length?'info':'warn','Invoice last-3 search',{typed:term,last3,today:brylixTodayISO(),matches:matches.length,results:matches.slice(0,8).map(x=>({invoice:x.inv,path:x.path,customer:invoiceCustomerName(x.order)}))});
+  if(!matches.length){setResultMessage('erpInvoiceResults',`No today's INV- invoice ends with ${last3}.`);setInvoiceLookupStatus(`No today's invoice found ending in ${last3}`,true);return}
+  box.innerHTML=`<div class="erpResultSummary">Today • ending ${htmlEsc(last3)} • ${matches.length} match${matches.length===1?'':'es'} • tap to select</div>`;
   matches.forEach(({inv,order})=>{
     const btn=document.createElement('button');btn.type='button';btn.className='erpResultItem';btn.setAttribute('role','option');
-    const customer=invoiceCustomerName(order),date=String(order?.date||order?.created_at||''),total=Number(order?.total||0);
-    const meta=[customer,date,total?money(total):''].filter(Boolean).join(' • ');
-    btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(inv)}</span><span class="erpResultSecondary">${htmlEsc(meta||'Brylix ERP invoice')}</span></span><span class="erpResultBadge">ERP</span>`;
-    btn.addEventListener('pointerdown',e=>e.preventDefault());btn.addEventListener('click',()=>{$('trackerInvoice').value=inv;closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Selected ${inv} from Brylix ERP`)});box.appendChild(btn)
+    const customer=invoiceCustomerName(order),date=String(order?.date||order?.invoice_date||order?.created_at||'').slice(0,10),total=Number(order?.total||order?.grand_total||order?.invoice_total||0),meta=[customer,date,total?money(total):''].filter(Boolean).join(' • ');
+    btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(inv)}</span><span class="erpResultSecondary">${htmlEsc(meta||"Today's Brylix ERP invoice")}</span></span><span class="erpResultBadge">${htmlEsc(last3)}</span>`;
+    btn.addEventListener('pointerdown',e=>e.preventDefault());btn.addEventListener('click',()=>{$('trackerInvoice').value=inv;closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Selected ${inv} • today's ERP invoice`);erpDebugLog('info','Invoice selected',{invoice:inv})});box.appendChild(btn)
   });openErpResultList('erpInvoiceResults')
 }
-async function searchBrylixInvoices(term){
-  term=String(term||'').trim();if(term.length<2){closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus('Brylix ERP • type at least 2 characters of an INV- number');return}
-  setResultMessage('erpInvoiceResults','Searching Brylix invoices…','loading');
-  try{await loadBrylixOrders(false);renderInvoiceResults(term)}catch(err){console.error('Brylix invoice lookup failed:',err);closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Brylix ERP unavailable • ${err.message}`,true)}
+async function searchBrylixInvoices(term=''){
+  term=String(term||'').trim();const typedDigits=digitsOnly(term);
+  if(typedDigits.length<3){closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Type the last 3 invoice digits • ${typedDigits.length}/3 entered`);return}
+  setResultMessage('erpInvoiceResults',`Checking today's invoices ending in ${typedDigits.slice(-3)}…`,'loading');
+  try{await loadBrylixOrders(false);renderInvoiceResults(term)}catch(err){erpDebugLog('error','Brylix invoice lookup failed',{message:err.message});closeErpResultList('erpInvoiceResults');setInvoiceLookupStatus(`Brylix ERP unavailable • ${err.message}`,true)}
 }
 
-function normalizeBrylixCustomer(c){return{erpId:c?.id??c?.customer_id??null,name:String(c?.name||[c?.f_name,c?.l_name].filter(Boolean).join(' ')||'').trim(),contact:String(c?.phone||c?.mobile||c?.contact||'').trim(),email:String(c?.email||'').trim(),source:'brylix'}}
-function localCustomerMatches(term){const q=String(term||'').trim().toLowerCase(),phoneQ=normalizePhone(term);return customerStore().filter(c=>{const n=String(c.name||'').toLowerCase(),p=normalizePhone(c.contact);return !q||n.includes(q)||(phoneQ&&p.includes(phoneQ))}).map(c=>({...c,source:'quotation'})).slice(0,12)}
-function mergeCustomerRows(...groups){const map=new Map();groups.flat().forEach(c=>{if(!c)return;const name=String(c.name||'').trim(),contact=String(c.contact||'').trim();if(!name&&!contact)return;const key=`${name.toLowerCase()}|${normalizePhone(contact)}`;if(!map.has(key)||c.source==='brylix')map.set(key,{...c,name,contact})});return[...map.values()]}
-async function getBrylixCustomerMatches(term){
-  const key=String(term||'').trim().toLowerCase(),cached=brylixCustomerCache.get(key);if(cached&&(Date.now()-cached.at)<BRYLIX_CUSTOMER_CACHE_MS)return cached.rows;
-  const requestId=++brylixCustomerRequestSeq,result=await brylixGet('/customers',{per_page:20,search:term});if(requestId!==brylixCustomerRequestSeq)return[];
-  const rows=(Array.isArray(result.data)?result.data:[]).map(normalizeBrylixCustomer).filter(c=>c.name||c.contact);brylixCustomerCache.set(key,{at:Date.now(),rows});return rows
+function phoneCandidate(value){if(value===null||value===undefined)return'';if(typeof value==='string'||typeof value==='number')return String(value).trim();if(typeof value==='object')return String(value.number||value.phone||value.mobile||value.contact||'').trim();return''}
+function extractCustomerPhone(c){
+  const candidates=[['phone',c?.phone],['mobile',c?.mobile],['phone_number',c?.phone_number],['mobile_number',c?.mobile_number],['contact_number',c?.contact_number],['telephone',c?.telephone],['tel',c?.tel],['contact.number',c?.contact?.number],['contact',typeof c?.contact==='object'?null:c?.contact],['whatsapp',c?.whatsapp]];
+  for(const [source,value] of candidates){const p=phoneCandidate(value);if(p)return{phone:p,source}}
+  return{phone:'',source:''}
 }
-function selectCustomerResult(customer){
-  $('quoteCustomerName').value=customer.name||'';
-  $('quoteCustomerContact').value=customer.contact||'';
-  $('quoteCustomerContact').readOnly=false;
+function normalizeBrylixCustomer(c){const p=extractCustomerPhone(c);return{erpId:c?.id??c?.customer_id??null,name:String(c?.name||c?.company_name||[c?.f_name,c?.l_name].filter(Boolean).join(' ')||'').trim(),contact:p.phone,phoneSource:p.source,email:String(c?.email||'').trim(),source:'brylix',raw:c}}
+function localCustomerMatches(term){const q=String(term||'').trim().toLowerCase(),phoneQ=normalizePhone(term);return customerStore().filter(c=>{const n=String(c.name||'').toLowerCase(),p=normalizePhone(c.contact);return !q||n.includes(q)||(phoneQ&&p.includes(phoneQ))}).map(c=>({...c,phoneSource:'saved quotation',source:'quotation'})).slice(0,12)}
+function mergeCustomerRows(...groups){const map=new Map();groups.flat().forEach(c=>{if(!c)return;const name=String(c.name||'').trim(),contact=String(c.contact||'').trim();if(!name&&!contact)return;const key=`${name.toLowerCase()}|${normalizePhone(contact)}`;if(!map.has(key)||c.source==='brylix')map.set(key,{...c,name,contact})});return[...map.values()]}
+async function getBrylixCustomerMatches(term,force=false){
+  const key=String(term||'').trim().toLowerCase(),cached=brylixCustomerCache.get(key);if(!force&&cached&&(Date.now()-cached.at)<BRYLIX_CUSTOMER_CACHE_MS)return cached.rows;
+  const requestId=++brylixCustomerRequestSeq,result=await brylixGet('/customers',{per_page:20,search:term});if(requestId!==brylixCustomerRequestSeq)return[];
+  const raw=brylixRows(result),rows=raw.map(normalizeBrylixCustomer).filter(c=>c.name||c.contact);brylixCustomerCache.set(key,{at:Date.now(),rows});
+  erpDebugLog('info','Customer search mapped',{term,rawCount:raw.length,mappedCount:rows.length,sample:rows.slice(0,5).map(c=>({id:c.erpId,name:c.name,contact:c.contact,phoneSource:c.phoneSource,rawKeys:Object.keys(c.raw||{}).slice(0,20)}))});return rows
+}
+function addressPhoneCandidate(a){const candidates=[a?.contact?.number,a?.contact,a?.phone,a?.mobile,a?.contact_number,a?.telephone];for(const v of candidates){const p=phoneCandidate(v);if(p)return p}return''}
+async function resolveCustomerPhone(customer){
+  if(customer.contact){erpDebugLog('info','Customer phone already present',{id:customer.erpId,name:customer.name,phone:customer.contact,source:customer.phoneSource});return customer.contact}
+  if(customer.source!=='brylix'||!customer.erpId){erpDebugLog('warn','Selected customer has no phone and no ERP address fallback',{name:customer.name,source:customer.source});return''}
+  try{
+    erpDebugLog('info','Customer search result has no phone; checking ERP addresses',{id:customer.erpId,name:customer.name});
+    const result=await brylixGet(`/customers/${encodeURIComponent(customer.erpId)}/addresses`),addresses=brylixRows(result);
+    for(const a of addresses){const p=addressPhoneCandidate(a);if(p){erpDebugLog('info','Customer phone recovered from address',{id:customer.erpId,phone:p,addressId:a?.id});return p}}
+    erpDebugLog('warn','No phone found in customer or address records',{id:customer.erpId,addressCount:addresses.length});return''
+  }catch(err){erpDebugLog('error','Customer address phone fallback failed',{id:customer.erpId,message:err.message});return''}
+}
+async function selectCustomerResult(customer){
+  const name=$('quoteCustomerName'),phone=$('quoteCustomerContact');if(!name||!phone){erpDebugLog('error','Quotation customer fields missing from DOM');return}
+  const before={name:name.value,phone:phone.value};name.value=customer.name||'';phone.readOnly=false;phone.disabled=false;phone.removeAttribute('readonly');phone.removeAttribute('disabled');
+  let resolved=customer.contact||'';if(!resolved)resolved=await resolveCustomerPhone(customer);phone.value=resolved;phone.dataset.erpAutofilled=resolved?'1':'0';
   closeAllErpResults();updateExistingCustomerQuoteHint();
+  erpDebugLog(resolved?'info':'warn','Customer selected and quotation fields filled',{erpId:customer.erpId,selectedName:customer.name,phoneResolved:resolved||'[none]',phoneEditable:!phone.readOnly&&!phone.disabled,before,after:{name:name.value,phone:phone.value}});
+  if(!resolved){phone.focus();phone.placeholder='No ERP mobile found — enter manually'}
 }
 function renderCustomerResults(id,rows,term){
-  const box=$(id);if(!box)return;
-  if(!rows.length){setResultMessage(id,`No customer found for “${term}”. You can still type the details manually.`);return}
+  const box=$(id);if(!box)return;if(!rows.length){setResultMessage(id,`No customer found for “${term}”. You can still type the details manually.`);return}
   box.innerHTML=`<div class="erpResultSummary">${rows.length} customer match${rows.length===1?'':'es'} • tap to fill name + mobile</div>`;
-  rows.slice(0,30).forEach(c=>{
-    const btn=document.createElement('button');btn.type='button';btn.className='erpResultItem';btn.setAttribute('role','option');
-    const details=[c.contact,c.email].filter(Boolean).join(' • ');
-    btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(c.name||c.contact||'Customer')}</span><span class="erpResultSecondary">${htmlEsc(details||'No mobile number saved')}</span></span><span class="erpResultBadge">${c.source==='brylix'?'ERP':'QUOTE'}</span>`;
-    btn.addEventListener('pointerdown',e=>e.preventDefault());btn.addEventListener('click',()=>selectCustomerResult(c));box.appendChild(btn)
-  });openErpResultList(id)
+  rows.slice(0,30).forEach(c=>{const btn=document.createElement('button');btn.type='button';btn.className='erpResultItem';btn.setAttribute('role','option');const details=[c.contact||'No mobile in search result',c.email].filter(Boolean).join(' • ');btn.innerHTML=`<span class="erpResultMain"><span class="erpResultPrimary">${htmlEsc(c.name||c.contact||'Customer')}</span><span class="erpResultSecondary">${htmlEsc(details)}</span></span><span class="erpResultBadge">${c.source==='brylix'?'ERP':'QUOTE'}</span>`;btn.addEventListener('pointerdown',e=>e.preventDefault());btn.addEventListener('click',async()=>{btn.disabled=true;await selectCustomerResult(c)});box.appendChild(btn)});openErpResultList(id)
 }
 async function searchCustomerLookup(term,resultId){
-  term=String(term||'').trim();if(term.length<2){closeErpResultList(resultId);return}
-  setResultMessage(resultId,'Searching customers…','loading');
-  const local=localCustomerMatches(term);
-  try{const erp=await getBrylixCustomerMatches(term);renderCustomerResults(resultId,mergeCustomerRows(erp,local),term)}catch(err){console.error('Brylix customer lookup failed:',err);renderCustomerResults(resultId,local,term)}
+  term=String(term||'').trim();if(term.length<2){closeErpResultList(resultId);return}setResultMessage(resultId,'Searching customers…','loading');const local=localCustomerMatches(term);
+  try{const erp=await getBrylixCustomerMatches(term);renderCustomerResults(resultId,mergeCustomerRows(erp,local),term)}catch(err){erpDebugLog('error','Brylix customer lookup failed',{term,message:err.message});renderCustomerResults(resultId,local,term)}
 }
 function initBrylixAutocomplete(){
-  const invoice=$('trackerInvoice'),name=$('quoteCustomerName'),phone=$('quoteCustomerContact');
-  if(invoice){const run=debounce(v=>searchBrylixInvoices(v),280);invoice.addEventListener('input',()=>run(invoice.value));invoice.addEventListener('focus',()=>{if(invoice.value.trim().length>=2)run(invoice.value)})}
-  if(name){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerNameResults'),280);name.addEventListener('input',()=>{updateExistingCustomerQuoteHint();run(name.value)});name.addEventListener('focus',()=>{if(name.value.trim().length>=2)run(name.value)})}
-  if(phone){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerPhoneResults'),280);phone.addEventListener('input',()=>run(phone.value));phone.addEventListener('focus',()=>{if(phone.value.trim().length>=2)run(phone.value)})}
-  document.addEventListener('pointerdown',e=>{if(!e.target.closest('.erpLookupWrap')&&!e.target.closest('.erpResultList'))closeAllErpResults()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAllErpResults()})
+  initErpDebug();const invoice=$('trackerInvoice'),name=$('quoteCustomerName'),phone=$('quoteCustomerContact');
+  if(invoice){
+    const run=debounce(v=>searchBrylixInvoices(v),180);
+    invoice.addEventListener('input',()=>{const d=digitsOnly(invoice.value);if(d.length>3&&!/^INV-/i.test(invoice.value))invoice.value=d.slice(-3);run(invoice.value)});
+    invoice.addEventListener('focus',()=>{if(/^INV-/i.test(invoice.value))invoice.select();else{const d=digitsOnly(invoice.value);setInvoiceLookupStatus(`Type the last 3 invoice digits • ${Math.min(d.length,3)}/3 entered`)}})
+  }
+  if(name){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerNameResults'),240);name.addEventListener('input',()=>{updateExistingCustomerQuoteHint();run(name.value)});name.addEventListener('focus',()=>{if(name.value.trim().length>=2)run(name.value)})}
+  if(phone){const run=debounce(v=>searchCustomerLookup(v,'erpCustomerPhoneResults'),240);phone.addEventListener('input',()=>{phone.dataset.erpAutofilled='0';run(phone.value)});phone.addEventListener('focus',()=>{if(phone.value.trim().length>=2)run(phone.value)})}
+  document.addEventListener('pointerdown',e=>{if(!e.target.closest('.erpLookupWrap')&&!e.target.closest('.erpResultList')&&!e.target.closest('.erpDebugPanel'))closeAllErpResults()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAllErpResults();closeErpDebug()}})
 }
-
 
 function currentTier(gp=Number($('margin').value)){return tiers.find(t=>t.gp===gp)||tiers[0]}
 function materialLabel(v){return v==='DTTOP'?'ELP Hybrid':v}
@@ -1052,5 +1128,22 @@ async function changePassword(){
 
 bootstrap();
 </script>
+
+<div class="erpDebugPanel" id="erpDebugPanel" aria-hidden="true">
+  <div class="erpDebugHead">
+    <strong>🛠 Brylix ERP Diagnostics</strong>
+    <div class="erpDebugActions">
+      <button class="btn secondary" id="erpDebugTestInvoices" type="button">Test Today Invoices</button>
+      <button class="btn secondary" id="erpDebugTestCustomer" type="button">Test Customer Field</button>
+      <button class="btn ghost" id="erpDebugCopy" type="button">Copy Log</button>
+      <button class="btn danger" id="erpDebugClear" type="button">Clear</button>
+      <button class="btn ghost" id="erpDebugClose" type="button">Close</button>
+    </div>
+  </div>
+  <div class="erpDebugMeta" id="erpDebugMeta">Ready. Search an invoice/customer, then check this panel if something does not fill.</div>
+  <pre class="erpDebugLog" id="erpDebugLog">ERP diagnostics ready.</pre>
+  <div class="erpDebugHint">The API key is never printed in this log. If a lookup fails, copy this log and send it here.</div>
+</div>
+
 </body>
 </html>
